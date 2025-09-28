@@ -1,0 +1,107 @@
+/* src/components/RegisterModal.css */
+.register-modal-content {
+  background: rgba(25, 25, 35, 0.5);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: white;
+  padding: 2.5rem;
+  border-radius: 1rem;
+
+  /* --- INICIO DE LA CORRECCIÓN --- */
+  box-sizing: border-box; /* Asegura que el padding se incluya en el ancho total */
+  width: 32rem; /* Ancho base de ~512px. Puedes aumentar este valor. */
+  max-width: 95vw; /* En móviles, nunca superará el 95% del ancho de la pantalla */
+  /* --- FIN DE LA CORRECCIÓN --- */
+}
+
+.modal-header {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin: 0 0 1.5rem 0;
+  text-align: center;
+}
+
+.modal-body {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem; /* Un poco más de espacio */
+}
+
+/* --- NUEVOS ESTILOS PARA INPUTS CON ICONOS --- */
+.input-group {
+  position: relative;
+}
+
+.input-icon {
+  position: absolute;
+  top: 50%;
+  left: 1rem;
+  transform: translateY(-50%);
+  color: rgba(255, 255, 255, 0.4);
+  pointer-events: none; /* Para que el clic llegue al input */
+}
+
+.form-input {
+  background-color: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 0.5rem;
+  padding: 1rem 1rem 1rem 3rem; /* Padding izquierdo para el icono */
+  color: white;
+  font-size: 1rem;
+  width: 100%;
+  transition: border-color 0.2s, box-shadow 0.2s; /* Transición suave */
+}
+
+.form-input::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+/* --- EFECTO DE FOCO MEJORADO --- */
+.form-input:focus {
+  outline: none;
+  border-color: #FD08BB;
+  box-shadow: 0 0 0 3px rgba(253, 8, 187, 0.3); /* Efecto "Glow" */
+}
+
+/* --- ESTILOS DE BOTONES REFINADOS --- */
+.modal-footer {
+  display: flex;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.modal-button-primary, .modal-button-secondary {
+  flex-grow: 1;
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  font-weight: bold;
+  cursor: pointer;
+  border: none;
+  transition: all 0.2s ease-in-out; /* Transición para todo */
+}
+
+.modal-button-primary:hover {
+  background-color: #c70694;
+  transform: translateY(-2px); /* Efecto de elevación */
+  box-shadow: 0 4px 15px rgba(253, 8, 187, 0.3);
+}
+.modal-button-primary:disabled {
+  background-color: #8a0465;
+  cursor: not-allowed;
+}
+
+.modal-button-secondary {
+  background-color: transparent;
+  border: 1px solid #FD08BB;
+  color: #FD08BB;
+}
+ .modal-button-secondary:hover {
+  background-color: rgba(253, 8, 187, 0.1);
+  transform: translateY(-2px);
+}
+
+.modal-button-primary {
+  background-color: #FD08BB;
+  color: white;
+}

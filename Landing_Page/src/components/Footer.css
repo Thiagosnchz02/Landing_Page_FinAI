@@ -1,0 +1,25 @@
+/* src/components/Footer.css */
+.footer {
+  width: 100%;
+  padding: 2rem 0;
+}
+
+.footer-container {
+  max-width: 1280px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0 1rem;
+}
+
+/* --- ESTILOS PARA LOS ICONOS DEL LOGOLOOP --- */
+
+/* Estilo por defecto de los iconos (SVG) */
+.footer .logo-loop__link svg {
+  color: white;
+  transition: color 0.3s ease-in-out; /* Transición suave del color */
+}
+
+/* Estilo al pasar el ratón por encima del enlace */
+.footer .logo-loop__link:hover svg {
+  color: #FD08BB; /* El color fucsia de tu efecto Aurora */
+}

@@ -1,0 +1,81 @@
+/* src/components/LogoLoop.css */
+
+.logo-loop {
+  position: relative;
+  overflow: hidden;
+
+  /* --- AÑADIR ESTAS LÍNEAS --- */
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 20%, black 80%, transparent 100%);
+  mask-image: linear-gradient(to right, transparent 0%, black 20%, black 80%, transparent 100%);
+}
+
+/* Capas para el efecto de desvanecimiento en los bordes */
+.logo-loop__fade {
+  pointer-events: none;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  z-index: 2;
+  width: clamp(24px, 8%, 120px);
+}
+
+.logo-loop__fade--left {
+  left: 0;
+  background-image: linear-gradient(to right, var(--logoloop-fadeColor, #111827), transparent);
+}
+
+.logo-loop__fade--right {
+  right: 0;
+  background-image: linear-gradient(to left, var(--logoloop-fadeColor, #111827), transparent);
+}
+
+/* El 'track' que se mueve */
+.logo-loop__track {
+  display: flex;
+  width: max-content;
+  will-change: transform;
+  user-select: none;
+}
+
+/* La lista de logos */
+.logo-loop__list {
+  display: flex;
+  align-items: center;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* Cada elemento de la lista */
+.logo-loop__item {
+  flex-shrink: 0;
+  margin-right: var(--logoloop-gap);
+  font-size: var(--logoloop-logoHeight);
+  line-height: 1;
+}
+
+/* Contenido del item (el ícono en sí) */
+.logo-loop__item-content {
+  display: inline-flex;
+  align-items: center;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Replicamos el efecto 'group-hover/item:scale-120' de Tailwind */
+.logo-loop--scale-on-hover:hover .logo-loop__item-content {
+  transform: scale(1.2);
+}
+
+/* Estilo para los enlaces */
+.logo-loop__link {
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+  border-radius: 4px;
+  transition: opacity 0.2s;
+  color: inherit; /* Hereda el color del texto del footer */
+}
+
+.logo-loop__link:hover {
+  opacity: 0.8;
+}

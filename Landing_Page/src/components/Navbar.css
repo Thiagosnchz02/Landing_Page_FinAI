@@ -1,0 +1,100 @@
+/* src/components/Navbar.css */
+
+.navbar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 50;
+  padding: 1.5rem 1rem;
+}
+
+@media (min-width: 768px) {
+  .navbar {
+    padding: 1.5rem 2rem;
+  }
+}
+
+.navbar-container {
+  max-width: 1280px;
+  margin-left: auto;
+  margin-right: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* <-- Esta es la clave del layout de 3 partes */
+  width: 100%;
+}
+
+/* Estilos para el nuevo logo */
+.navbar-logo {
+  height: 70px; /* Puedes ajustar este tamaño */
+  width: auto;
+}
+
+.navbar-links {
+  display: none;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .navbar-links {
+    display: flex;
+  }
+}
+
+.navbar-link {
+  color: #D1D5DB;
+  text-decoration: none;
+  transition: color 0.2s ease-in-out;
+}
+
+.navbar-link:hover {
+  color: white;
+}
+
+.navbar-link.active {
+  color: white;
+  font-weight: 500;
+}
+
+.navbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.navbar-button {
+  border-radius: 0.5rem;
+  padding: 0.5rem 1.25rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: background-color 0.3s;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  cursor: pointer;
+  background-color: rgba(255, 255, 255, 0.1);
+  color: white;
+  backdrop-filter: blur(10px);
+}
+
+.navbar-button:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.navbar-button-secondary {
+  background-color: transparent;
+}
+
+.navbar-button-secondary:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.login-button-mobile {
+  display: none;
+}
+
+@media (min-width: 640px) {
+  .login-button-mobile {
+    display: block;
+  }
+}

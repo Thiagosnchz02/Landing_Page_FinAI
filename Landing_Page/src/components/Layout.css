@@ -1,0 +1,39 @@
+/* src/components/Layout.css */
+
+/* Contenedor principal que ocupa toda la pantalla y sirve de 
+  ancla de posicionamiento para el fondo.
+*/
+.layout-container {
+  position: relative;
+  min-height: 100vh;
+}
+
+/* Envoltorio para el componente Aurora. 
+  Lo posiciona absolutamente para que llene la pantalla y lo envía detrás de todo.
+*/
+.aurora-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: -10; /* Envía esta capa completamente al fondo */
+}
+
+/* Envoltorio para todo el contenido visible (Navbar, páginas, Footer).
+  Usa flexbox para empujar el footer hacia abajo.
+*/
+.content-wrapper {
+  position: relative; /* Lo mantiene en el flujo normal, pero permite z-index */
+  z-index: 10;      /* Se asegura de que esté por encima del fondo aurora */
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* Ocupa al menos toda la altura de la pantalla */
+}
+
+/* El contenido principal de la página (donde se renderiza el <Outlet />).
+  Le decimos que crezca para ocupar todo el espacio disponible.
+*/
+.main-content {
+  flex-grow: 1; 
+}

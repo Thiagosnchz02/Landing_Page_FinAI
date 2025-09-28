@@ -1,0 +1,42 @@
+/* src/components/RotatingText.css */
+.rotating-text-wrapper {
+  display: inline-flex;
+  /* 1. Cambiamos la alineación vertical para que se centre mejor con el texto */
+  vertical-align: middle;
+  /* 2. Ajustamos la altura para el nuevo tamaño de fuente */
+  height: 75px; 
+  overflow: hidden;
+  margin-left: 15px;
+}
+
+.rotating-text-container {
+  display: flex;
+  flex-direction: column;
+  /* 5. La duración de la animación ahora coincide con el nuevo alto */
+  animation: rotate-text 12s infinite; 
+}
+
+.rotating-text-container span {
+  font-family: 'Playfair Display', serif;
+  font-weight: 500;
+  font-style: italic;
+
+  /* 3. Definimos un tamaño de fuente más pequeño que el del texto principal */
+  font-size: 60px;
+  
+  /* 4. La altura de línea y la altura deben coincidir con el wrapper */
+  height: 73px; 
+  line-height: 73px;
+  padding: 0 10px;
+}
+
+/* 6. Actualizamos los valores de la animación al nuevo alto de 75px */
+@keyframes rotate-text {
+  0%, 4% { transform: translateY(0); }
+  16.66%, 20.66% { transform: translateY(-75px); }
+  33.32%, 37.32% { transform: translateY(-150px); }
+  49.98%, 53.98% { transform: translateY(-225px); }
+  66.64%, 70.64% { transform: translateY(-300px); }
+  83.3%, 87.3% { transform: translateY(-375px); }
+  100% { transform: translateY(0); }
+}
