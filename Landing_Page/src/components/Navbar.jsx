@@ -4,7 +4,7 @@ import { Link, NavLink, useNavigate } from 'react-router-dom';
 import './Navbar.css';
 import logo from '../assets/Isotipo.png'; // 1. Importamos tu nuevo logo
 
-const Navbar = ({ onRegisterOpen }) => { // <-- Recibir la prop
+const Navbar = ({ onRegisterOpen, onLoginOpen }) => { // <-- Recibir la prop
   const navigate = useNavigate();
   return (
     <header className="navbar">
@@ -17,6 +17,9 @@ const Navbar = ({ onRegisterOpen }) => { // <-- Recibir la prop
 
         {/* --- Parte Central: Enlaces de Navegación --- */}
         <nav className="navbar-links">
+          <NavLink to="/" className="navbar-link">
+            Inicio
+          </NavLink>
           <NavLink to="/about" className="navbar-link">
             Sobre nosotros
           </NavLink>
@@ -30,8 +33,8 @@ const Navbar = ({ onRegisterOpen }) => { // <-- Recibir la prop
 
         {/* --- Parte Derecha: Botones de Acción --- */}
         <div className="navbar-actions">
-          <button className="navbar-button" onClick={() => navigate('/pricing')}>
-            Get Started
+          <button className="navbar-button" onClick={onLoginOpen}>
+            Login
           </button>
           {/* Botón que abre el Modal */}
           <button className="navbar-button navbar-button-secondary login-button-mobile" onClick={onRegisterOpen}>

@@ -1,0 +1,54 @@
+/* src/pages/About.css */
+.about-page {
+  color: white;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 8rem 2rem 4rem; /* Espacio para el navbar y el footer */
+  display: flex;
+  flex-direction: column;
+  gap: 6rem; /* Espacio entre secciones */
+}
+
+.about-section {
+  text-align: center;
+}
+
+.about-title {
+  font-size: 3rem;
+  margin-bottom: 2rem;
+}
+
+.about-section p {
+  font-size: 1.125rem;
+  line-height: 1.8;
+  color: #d1d5db;
+  max-width: 700px;
+  margin: 0 auto 1rem auto;
+}
+
+.about-section p b {
+  color: white;
+}
+
+.graph-line {
+  width: 100%;
+  max-width: 300px;
+  margin: 2rem auto 0;
+  stroke: rgba(255, 255, 255, 0.4);
+  stroke-width: 3;
+}
+
+.team-grid {
+  display: flex; /* <-- Cambiamos a flexbox */
+  justify-content: center; /* <-- Centramos las tarjetas horizontalmente */
+  gap: 1.5rem;
+}
+
+.quote-text {
+  font-style: italic;
+  color: #a0a0a0;
+  font-size: 1.25rem;
+  max-width: 700px;
+  margin: 0 auto;
+  line-height: 1.6;
+}

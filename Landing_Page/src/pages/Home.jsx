@@ -8,7 +8,7 @@ import './Home.css'; // <-- 1. Importamos el nuevo CSS de la página
 
 const Home = () => {
     const navigate = useNavigate();
-    const { onRegisterOpen } = usePageContext();
+    const { onRegisterOpen, onLoginOpen } = usePageContext();
     const rotatingWords = [
         { text: 'girl Math', color: '#EA00FF'},
         { text: 'curiosos', color: '#0015FF' },
@@ -37,8 +37,8 @@ const Home = () => {
                 </span>
             </h1>
             <div className="hero-actions">
-                <button className="hero-button" onClick={() => navigate('/pricing')}>
-                    Get Started
+                <button className="hero-button" onClick={onLoginOpen}>
+                    Login
                 </button>
                 {/* Botón que abre el Modal */}
                 <button className="hero-button hero-button--secondary" onClick={onRegisterOpen}>

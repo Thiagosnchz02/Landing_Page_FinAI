@@ -1,0 +1,19 @@
+/* src/components/PortalLayout.css */
+.portal-layout {
+  display: flex;
+  min-height: 100vh;
+  background-color: #000;
+  color: white;
+}
+
+.portal-sidebar-placeholder {
+  width: 250px;
+  background-color: #101010;
+  padding: 2rem;
+  flex-shrink: 0;
+}
+
+.portal-content {
+  flex-grow: 1;
+  padding: 2rem 3rem;
+}

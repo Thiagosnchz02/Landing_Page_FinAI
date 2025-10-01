@@ -1,0 +1,116 @@
+/* src/pages/QR.css */
+.qr-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  color: white;
+  padding: 12rem 2rem 2rem;
+  gap: 3rem;
+}
+
+.qr-header {
+  text-align: center;
+}
+
+/* Título simplificado, sin el efecto glassmorphism */
+.qr-title {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.qr-subtitle {
+  font-size: 1.25rem;
+  color: #a0a0a0;
+  max-width: 600px;
+}
+
+.qr-subtitle b {
+  color: white;
+}
+
+.qr-cards-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 4rem;
+}
+
+/* Nuevo contenedor para cada tarjeta y su título */
+.qr-card-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+
+  /* Estilos de la tarjeta */
+  background: rgba(25, 25, 35, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 1.5rem;
+  padding: 2rem;
+  padding-bottom: 1.5rem;
+}
+
+/* Nuevo título para la plataforma (iOS/Android) */
+.qr-platform-title {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: #a0a0a0;
+}
+
+/* Estilos para el QR dentro de la tarjeta */
+.qr-overlay {
+  /* Quitamos el fondo negro y el padding */
+  background-color: transparent; 
+  border-radius: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 
+    inset 1px 1px 3px rgba(255, 255, 255, 0.2),
+    /* Aumentamos el desplazamiento (15px), el desenfoque (35px) y la opacidad (0.6) */
+    15px 15px 35px rgba(0, 0, 0, 0.6);
+  transform: scale(0.9);
+}
+
+/* Hacemos el SVG del QR un poco opaco */
+.qr-overlay svg {
+  opacity: 0.85;
+}
+
+
+.store-buttons {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.store-button {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 0.75rem 1.5rem;
+  border-radius: 50px;
+  color: white;
+  text-decoration: none;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.store-button:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+}
+
+.store-button svg {
+  font-size: 1.5rem;
+}

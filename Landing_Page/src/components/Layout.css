@@ -28,7 +28,7 @@
   z-index: 10;      /* Se asegura de que esté por encima del fondo aurora */
   display: flex;
   flex-direction: column;
-  min-height: 100vh; /* Ocupa al menos toda la altura de la pantalla */
+  flex-grow: 1; /* Ocupa al menos toda la altura de la pantalla */
 }
 
 /* El contenido principal de la página (donde se renderiza el <Outlet />).

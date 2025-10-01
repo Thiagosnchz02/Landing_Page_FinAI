@@ -1,0 +1,57 @@
+/* src/components/PortalSidebar.css */
+.portal-sidebar {
+  width: 250px;
+  background: rgba(15, 15, 20, 0.7);
+  backdrop-filter: blur(10px);
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+}
+.sidebar-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 1.25rem;
+  font-weight: bold;
+  margin-bottom: 3rem;
+}
+.sidebar-logo { height: 32px; }
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  flex-grow: 1;
+}
+.sidebar-link {
+  color: #a0a0a0;
+  text-decoration: none;
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  transition: all 0.2s;
+}
+.sidebar-link:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: white;
+}
+.sidebar-link.active {
+  background: #FD08BB;
+  color: white;
+  font-weight: 500;
+  box-shadow: 0 0 15px rgba(253, 8, 187, 0.4);
+}
+.sidebar-logout-button {
+  width: 100%;
+  text-align: center;
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  border: 1px solid rgba(255, 80, 80, 0.5);
+  color: rgba(255, 80, 80, 0.8);
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.sidebar-logout-button:hover {
+  background: rgba(255, 80, 80, 0.1);
+  color: white;
+}

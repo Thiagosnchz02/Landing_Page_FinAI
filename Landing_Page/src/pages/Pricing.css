@@ -1,0 +1,213 @@
+/* src/pages/Pricing.css */
+.pricing-page {
+  color: white;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 8rem 2rem 4rem;
+  text-align: center;
+}
+
+.pricing-header h1 {
+  font-size: 3rem;
+  font-weight: 700;
+  background-image: linear-gradient(to right, #FC3DF3, #4D0FFF);
+  color: transparent;
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+.pricing-header p {
+  font-size: 1.125rem;
+  color: #a0a0a0;
+  max-width: 500px;
+  margin: 1rem auto 0;
+}
+
+/* --- Toggle Mensual/Anual --- */
+.billing-toggle {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  margin: 3rem 0;
+  font-weight: 500;
+}
+
+.discount-tag {
+  background-color: #FD08BB;
+  color: white;
+  padding: 0.2rem 0.5rem;
+  border-radius: 99px;
+  font-size: 0.75rem;
+  margin-left: 0.5rem;
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+
+.switch input { 
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: .4s;
+  border-radius: 34px;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  transition: .4s;
+  border-radius: 50%;
+}
+
+input:checked + .slider {
+  background-color: #FD08BB;
+}
+
+input:checked + .slider:before {
+  transform: translateX(26px);
+}
+
+/* --- Grid de Tarjetas --- */
+.pricing-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+  position: relative;
+}
+
+@media (min-width: 992px) {
+  .pricing-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* Tarjeta de precios */
+.pricing-card {
+  background: rgba(25, 25, 35, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 1rem;
+  padding: 2rem;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+  /* Animación de entrada */
+  opacity: 0;
+  transform: translateY(20px);
+  animation: card-fade-in 0.5s ease forwards;
+}
+
+/* Animación escalonada */
+.pricing-card:nth-child(2) { animation-delay: 0.2s; }
+.pricing-card:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes card-fade-in {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.pricing-card.highlight {
+  border-color: #FD08BB;
+  transform: scale(1.05);
+}
+
+.pricing-grid:hover .pricing-card:not(:hover) {
+  transform: scale(0.95);
+  opacity: 0.7;
+}
+
+.pricing-card:hover {
+  transform: scale(1.08) !important;
+  box-shadow: 0 10px 40px rgba(253, 8, 187, 0.3);
+  opacity: 1 !important;
+}
+
+.card-header h3 {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+.card-price {
+  font-size: 2.5rem;
+  font-weight: bold;
+  margin: 1rem 0 0.5rem;
+}
+.price-currency { font-size: 1.5rem; color: #a0a0a0; }
+.price-period { font-size: 1rem; color: #a0a0a0; }
+.yearly-total { font-size: 0.875rem; color: #a0a0a0; margin-top: -0.5rem; }
+.card-description { color: #d1d5db; }
+
+.features-list {
+  list-style: none;
+  padding: 0;
+  margin: 2rem 0;
+  flex-grow: 1;
+}
+.features-list li {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+.feature-icon {
+  color: #FD08BB;
+  flex-shrink: 0;
+}
+
+.cta-button {
+  width: 100%;
+  padding: 1rem;
+  border: none;
+  border-radius: 0.5rem;
+  background: #FD08BB;
+  color: white;
+  font-weight: bold;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.pricing-card:not(.highlight) .cta-button {
+  background: transparent;
+  border: 1px solid #FD08BB;
+  color: #FD08BB;
+}
+
+.cta-button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 20px rgba(253, 8, 187, 0.4);
+}
+.pricing-footer {
+    margin-top: 3rem;
+    color: #a0a0a0;
+    font-size: 0.875rem;
+}
+.pricing-footer a {
+    color: #FD08BB;
+    text-decoration: none;
+    font-weight: bold;
+}
