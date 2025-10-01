@@ -4,7 +4,24 @@ import RotatingText from '../components/RotatingText';
 import { useNavigate } from 'react-router-dom';
 import { usePageContext } from '../components/Layout';
 import '../components/RotatingText.css';
+import TiltedCard from '../components/TiltedCard';
 import './Home.css'; // <-- 1. Importamos el nuevo CSS de la página
+
+// Datos para las tarjetas
+const features = [
+  {
+    title: 'Asistencia Personalizada',
+    description: 'Accede a la mejor ayuda personalizada con IA para ti y tu dinero. En cualquier momento y lugar.',
+  },
+  {
+    title: 'Control Total',
+    description: 'Aprende a controlar tu dinero y dominar el mundo de la economía de forma sencilla con nuestros cursos.',
+  },
+  {
+    title: 'Independencia Financiera',
+    description: 'Da un paso más hacia tu independencia financiera. Con FinAi, toma decisiones inteligentes y crece económicamente.',
+  },
+];
 
 const Home = () => {
     const navigate = useNavigate();
@@ -47,40 +64,25 @@ const Home = () => {
             </div>
         </div>
     </div>
-
-      {/* --- SECCIÓN "POR QUÉ ELEGIR FINAI" (aún con Tailwind, la haremos después) --- */}
       <section className="features-section">
         <h2 className="features-section__title">
           Por qué elegir FinAi
         </h2>
         <div className="features-section__grid">
-          {/* Card 1 */}
-          <div className="feature-card">
-            <div className="feature-card__image-placeholder">
-              Monstruo en varias poses
+          {features.map((feature, index) => (
+            <div key={index} className="feature-card-wrapper">
+              <TiltedCard
+                containerHeight="400px" // Ajusta la altura de la tarjeta
+                overlayContent={
+                  <div className="feature-card-content">
+                    <h3>{feature.title}</h3>
+                    <p>{feature.description}</p>
+                  </div>
+                }
+                displayOverlayContent={true}
+              />
             </div>
-            <p className="feature-card__description">
-              Accede a la mejor ayuda personalizada con IA para ti y tu dinero. En cualquier momento y lugar.
-            </p>
-          </div>
-          {/* Card 2 */}
-          <div className="feature-card">
-            <div className="feature-card__image-placeholder">
-              Monstruo en varias poses
-            </div>
-            <p className="feature-card__description">
-              Aprende a controlar tu dinero y dominar el mundo de la economía de forma sencilla con nuestros cursos.
-            </p>
-          </div>
-          {/* Card 3 */}
-          <div className="feature-card">
-            <div className="feature-card__image-placeholder">
-              Monstruo en varias poses
-            </div>
-            <p className="feature-card__description">
-              Da un paso más hacia tu independencia financiera. Con FinAi, toma decisiones inteligentes y crece económicamente.
-            </p>
-          </div>
+          ))}
         </div>
       </section>
     </>

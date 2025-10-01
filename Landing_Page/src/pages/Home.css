@@ -125,8 +125,75 @@
 }
 .features-section__grid {
   display: grid;
-  grid-template-columns: repeat(1, minmax(0, 1fr));
-  gap: 2rem;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 3rem;
+  justify-items: center;
+}
+
+.feature-card-wrapper {
+  position: relative; /* Necesario para el efecto de aura */
+  width: 100%;
+  max-width: 350px;
+
+  /* Animación de entrada escalonada */
+  opacity: 0;
+  transform: translateY(30px);
+  animation: card-entry 0.6s ease-out forwards;
+}
+
+/* Retraso para cada tarjeta */
+.feature-card-wrapper:nth-child(1) { animation-delay: 0.2s; }
+.feature-card-wrapper:nth-child(2) { animation-delay: 0.4s; }
+.feature-card-wrapper:nth-child(3) { animation-delay: 0.6s; }
+
+@keyframes card-entry {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Efecto de "aura" o foco de luz al hacer hover */
+.feature-card-wrapper::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 150%;
+  height: 150%;
+  background: radial-gradient(circle, #FD08BB4D 0%, transparent 70%);
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.feature-card-wrapper:hover::after {
+  opacity: 1;
+}
+
+/* Contenido dentro de la TiltedCard */
+.feature-card-content {
+  padding: 2rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  background: rgba(25, 25, 35, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 15px; /* Debe coincidir con el border-radius de TiltedCard.css */
+}
+
+.feature-card-content h3 {
+  font-size: 1.5rem;
+  font-weight: 500;
+  margin: 0 0 1rem 0;
+}
+.feature-card-content p {
+  color: #a0a0a0;
+  line-height: 1.6;
 }
 @media (min-width: 768px) {
   .features-section__grid {
