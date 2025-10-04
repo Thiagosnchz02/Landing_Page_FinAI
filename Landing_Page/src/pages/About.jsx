@@ -5,14 +5,17 @@ import GradientText from '../components/GradientText'; // <-- Nuevo import
 import './About.css';
 import avatarThiago from '../assets/team-member-1.jpg';
 import avatarAndres from '../assets/team-member-2.jpg';
+import avatarHugo from '../assets/team-member-3.jpg';
+import avatarEric from '../assets/team-member-4.jpg';
+import avatarJulio from '../assets/team-member-5.jpg';
 
 // Ajustamos los datos para las nuevas props del ProfileCard
 const teamData = [
   { name: 'ThiagoSnchz', title: 'CEO & Founder', handle: 'thiagosnchz', image: avatarThiago },
-  { name: 'Hugo Lucendo', title: 'Head of AI Strategy ', handle: 'hugolucendo', image: avatarThiago },
-  { name: 'Andrés de Abreu', title: 'Tech Lead – Full Stack', handle: 'andresedal', image: avatarThiago },
-  { name: 'Eric Casero', title: 'Head of Growth Marketing', handle: 'ericcb6', image: avatarThiago },
-  { name: 'Julio Lopez', title: 'Growth Marketing Manager', handle: 'julyatm_9', image: avatarThiago },
+  { name: 'Hugo Lucendo', title: 'Head of AI Strategy ', handle: 'hugolucendo', image: avatarHugo },
+  { name: 'Andrés de Abreu', title: 'Tech Lead – Full Stack', handle: 'andresedal', image: avatarAndres },
+  { name: 'Eric Casero', title: 'Head of Growth Marketing', handle: 'ericcb6', image: avatarEric },
+  { name: 'Julio Lopez', title: 'Growth Marketing Manager', handle: 'julyatm_9', image: avatarJulio },
 ];
 
 const About = () => {
