@@ -1,5 +1,5 @@
 // src/components/FeatureCard.jsx
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import TiltedCard from './TiltedCard';
 import { AIAssistantAnimation, ControlAnimation, IndependenceAnimation } from './FeatureAnimations';
 import './FeatureCard.css';
@@ -18,23 +18,9 @@ const auraColors = {
   'independence': '#9900FF',
 };
 
-// Detectar móvil
-const isMobile = () => {
-  if (typeof window === 'undefined') return false;
-  return window.innerWidth <= 768;
-};
-
 const FeatureCard = ({ title, description, animationType, index }) => {
   const [isHovered, setIsHovered] = useState(false);
-  const [mobile, setMobile] = useState(false);
   
-  useEffect(() => {
-    setMobile(isMobile());
-    const handleResize = () => setMobile(isMobile());
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
-
   const AnimationComponent = animationComponents[animationType];
   const auraColor = auraColors[animationType];
 
@@ -45,26 +31,16 @@ const FeatureCard = ({ title, description, animationType, index }) => {
         '--aura-color': auraColor,
         '--animation-delay': `${0.2 + index * 0.2}s`
       }}
-      onMouseEnter={() => !mobile && setIsHovered(true)}
-      onMouseLeave={() => !mobile && setIsHovered(false)}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
     >
       <TiltedCard
         containerHeight="100%"
-        disableTilt={mobile}
         overlayContent={
           <div className={`feature-card-content ${isHovered ? 'is-hovered' : ''}`}>
-            {/* Animación - solo en desktop */}
-            {AnimationComponent && !mobile && (
+            {/* Animación */}
+            {AnimationComponent && (
               <AnimationComponent isHovered={isHovered} />
-            )}
-            
-            {/* Icono estático para móvil */}
-            {mobile && (
-              <div className="feature-card-icon-mobile" style={{ color: auraColor }}>
-                {animationType === 'ai-assistant' && '🤖'}
-                {animationType === 'control' && '📊'}
-                {animationType === 'independence' && '🎯'}
-              </div>
             )}
             
             {/* Texto */}
@@ -74,13 +50,11 @@ const FeatureCard = ({ title, description, animationType, index }) => {
         }
       />
       
-      {/* Efecto de aura dinámico - solo en desktop */}
-      {!mobile && (
-        <div 
-          className={`feature-card-aura ${isHovered ? 'is-active' : ''}`}
-          style={{ '--aura-color': auraColor }}
-        />
-      )}
+      {/* Efecto de aura dinámico */}
+      <div 
+        className={`feature-card-aura ${isHovered ? 'is-active' : ''}`}
+        style={{ '--aura-color': auraColor }}
+      />
     </div>
   );
 };

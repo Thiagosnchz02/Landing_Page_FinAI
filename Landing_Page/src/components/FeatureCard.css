@@ -171,8 +171,7 @@
 @media (max-width: 768px) {
   .feature-card-wrapper {
     max-width: 100%;
-    height: auto;
-    min-height: 280px;
+    height: 380px;
   }
 
   .feature-card-content {
@@ -193,23 +192,12 @@
   }
 }
 
-/* Icono estático para móvil */
-.feature-card-icon-mobile {
-  font-size: 3rem;
-  margin-bottom: 1rem;
-  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
-}
-
 @media (max-width: 480px) {
   .feature-card-wrapper {
-    min-height: 250px;
+    height: 360px;
   }
 
   .feature-card-content {
     padding: 1.25rem 1rem;
-  }
-
-  .feature-card-icon-mobile {
-    font-size: 2.5rem;
   }
 }

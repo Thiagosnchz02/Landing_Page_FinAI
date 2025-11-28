@@ -1,5 +1,5 @@
 import { Renderer, Program, Mesh, Color, Triangle } from "ogl";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 
 import './Aurora.css';
 
@@ -11,7 +11,7 @@ void main() {
 `;
 
 const FRAG = `#version 300 es
-precision highp float;
+precision mediump float;
 
 uniform float uTime;
 uniform float uAmplitude;
@@ -109,17 +109,22 @@ void main() {
 }
 `;
 
-// Detectar si es móvil o dispositivo de bajo rendimiento
+// Detectar si es móvil o tiene poca potencia
 const isMobile = () => {
   if (typeof window === 'undefined') return false;
-  return window.innerWidth <= 768 || 
-         /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+  return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) 
+    || window.innerWidth < 768;
 };
 
-// Componente de fallback CSS para móvil (ligero)
-const AuroraCSSFallback = () => (
-  <div className="aurora-css-fallback" />
-);
+// Obtener device pixel ratio limitado para rendimiento
+const getOptimalPixelRatio = () => {
+  if (typeof window === 'undefined') return 1;
+  const dpr = window.devicePixelRatio || 1;
+  // En móviles, limitar a 1 para mejor rendimiento
+  // En desktop, limitar a 1.5 máximo
+  if (isMobile()) return Math.min(dpr, 1);
+  return Math.min(dpr, 1.5);
+};
 
 export default function Aurora(props) {
   const {
@@ -131,32 +136,26 @@ export default function Aurora(props) {
   propsRef.current = props;
 
   const ctnDom = useRef(null);
-  const [useFallback, setUseFallback] = useState(false);
 
   useEffect(() => {
-    // Detectar móvil al montar
-    if (isMobile()) {
-      setUseFallback(true);
-      return;
-    }
-
     const ctn = ctnDom.current;
     if (!ctn) return;
 
-    let renderer;
-    try {
-      renderer = new Renderer({
-        alpha: true,
-        premultipliedAlpha: true,
-        antialias: false, // Desactivar antialiasing para mejor rendimiento
-        powerPreference: 'low-power' // Preferir ahorro de energía
-      });
-    } catch (e) {
-      // Si WebGL falla, usar fallback
-      setUseFallback(true);
-      return;
-    }
+    const pixelRatio = getOptimalPixelRatio();
+    const mobile = isMobile();
+    
+    // FPS objetivo: 30 en móvil, 60 en desktop
+    const targetFPS = mobile ? 30 : 60;
+    const frameInterval = 1000 / targetFPS;
+    let lastFrameTime = 0;
 
+    const renderer = new Renderer({
+      alpha: true,
+      premultipliedAlpha: true,
+      antialias: !mobile, // Desactivar antialiasing en móvil
+      dpr: pixelRatio,
+      powerPreference: 'low-power' // Preferir eficiencia energética
+    });
     const gl = renderer.gl;
     gl.clearColor(0, 0, 0, 0);
     gl.enable(gl.BLEND);
@@ -167,28 +166,21 @@ export default function Aurora(props) {
 
     function resize() {
       if (!ctn) return;
-      // Reducir resolución en pantallas grandes para mejor rendimiento
-      const dpr = Math.min(window.devicePixelRatio, 1.5);
-      const width = ctn.offsetWidth * dpr;
-      const height = ctn.offsetHeight * dpr;
+      const width = ctn.offsetWidth;
+      const height = ctn.offsetHeight;
       renderer.setSize(width, height);
-      gl.canvas.style.width = ctn.offsetWidth + 'px';
-      gl.canvas.style.height = ctn.offsetHeight + 'px';
       if (program) {
-        program.uniforms.uResolution.value = [width, height];
+        program.uniforms.uResolution.value = [width * pixelRatio, height * pixelRatio];
       }
     }
     
-    // Throttle del resize para evitar llamadas excesivas
+    // Debounce resize para evitar múltiples llamadas
     let resizeTimeout;
-    const throttledResize = () => {
-      if (resizeTimeout) return;
-      resizeTimeout = setTimeout(() => {
-        resize();
-        resizeTimeout = null;
-      }, 100);
+    const debouncedResize = () => {
+      clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(resize, 100);
     };
-    window.addEventListener("resize", throttledResize);
+    window.addEventListener("resize", debouncedResize);
 
     const geometry = new Triangle(gl);
     if (geometry.attributes.uv) {
@@ -207,7 +199,7 @@ export default function Aurora(props) {
         uTime: { value: 0 },
         uAmplitude: { value: amplitude },
         uColorStops: { value: colorStopsArray },
-        uResolution: { value: [ctn.offsetWidth, ctn.offsetHeight] },
+        uResolution: { value: [ctn.offsetWidth * pixelRatio, ctn.offsetHeight * pixelRatio] },
         uBlend: { value: blend }
       }
     });
@@ -216,19 +208,36 @@ export default function Aurora(props) {
     ctn.appendChild(gl.canvas);
 
     let animateId = 0;
-    let lastTime = 0;
-    const targetFPS = 30; // Limitar a 30 FPS para ahorro de batería
-    const frameInterval = 1000 / targetFPS;
+    let isVisible = true;
 
-    const update = (t) => {
+    // Pausar animación cuando no es visible (ahorra batería)
+    const handleVisibilityChange = () => {
+      isVisible = !document.hidden;
+    };
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+
+    // Usar IntersectionObserver para pausar cuando no está en viewport
+    let isInViewport = true;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        isInViewport = entries[0].isIntersecting;
+      },
+      { threshold: 0.1 }
+    );
+    observer.observe(ctn);
+
+    const update = (currentTime) => {
       animateId = requestAnimationFrame(update);
       
+      // No renderizar si no es visible o no está en viewport
+      if (!isVisible || !isInViewport) return;
+      
       // Limitar FPS
-      const delta = t - lastTime;
-      if (delta < frameInterval) return;
-      lastTime = t - (delta % frameInterval);
+      const deltaTime = currentTime - lastFrameTime;
+      if (deltaTime < frameInterval) return;
+      lastFrameTime = currentTime - (deltaTime % frameInterval);
 
-      const { time = t * 0.01, speed = 1.0 } = propsRef.current;
+      const { time = currentTime * 0.01, speed = 1.0 } = propsRef.current;
       program.uniforms.uTime.value = time * speed * 0.1;
       program.uniforms.uAmplitude.value = propsRef.current.amplitude ?? 1.0;
       program.uniforms.uBlend.value = propsRef.current.blend ?? blend;
@@ -241,8 +250,10 @@ export default function Aurora(props) {
 
     return () => {
       cancelAnimationFrame(animateId);
-      window.removeEventListener("resize", throttledResize);
-      if (resizeTimeout) clearTimeout(resizeTimeout);
+      clearTimeout(resizeTimeout);
+      window.removeEventListener("resize", debouncedResize);
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+      observer.disconnect();
       if (ctn && gl.canvas.parentNode === ctn) {
         ctn.removeChild(gl.canvas);
       }
@@ -250,11 +261,6 @@ export default function Aurora(props) {
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [amplitude]);
-
-  // Usar fallback CSS en móvil
-  if (useFallback) {
-    return <AuroraCSSFallback />;
-  }
 
   return <div ref={ctnDom} className="aurora-container" />;
 }
