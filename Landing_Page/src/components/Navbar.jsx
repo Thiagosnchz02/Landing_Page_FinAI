@@ -1,5 +1,5 @@
 // src/components/Navbar.jsx
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import './Navbar.css';
 import logo from '/imagotipo.png';
@@ -7,13 +7,19 @@ import logo from '/imagotipo.png';
 const Navbar = () => {
   const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
   const handleDownload = () => {
-    // Navegar a la página QR que tiene los links de descarga
     navigate('/qr');
     setIsMenuOpen(false);
   };
@@ -27,15 +33,36 @@ const Navbar = () => {
           <img src={logo} alt="FinAi Logo" className="navbar-logo" />
         </Link>
 
-        {/* --- Botón de Hamburguesa (solo visible en móvil) --- */}
-        <button className="navbar-hamburger" onClick={toggleMenu}>
-          <span className={`hamburger-line ${isMenuOpen ? 'open' : ''}`}></span>
-          <span className={`hamburger-line ${isMenuOpen ? 'open' : ''}`}></span>
-          <span className={`hamburger-line ${isMenuOpen ? 'open' : ''}`}></span>
-        </button>
+        {/* --- Parte Derecha en móvil: Icono descarga + Hamburguesa --- */}
+        <div className="navbar-right">
+          {/* Botón de Descarga */}
+          <div className="navbar-actions">
+            <button className="navbar-button navbar-download" onClick={handleDownload}>
+              <span className="download-icon">📱</span>
+              <span className="download-text">Descargar App</span>
+            </button>
+          </div>
 
-        {/* --- Parte Central: Enlaces de Navegación --- */}
+          {/* Botón de Hamburguesa (solo visible en móvil) */}
+          <button 
+            className={`navbar-hamburger ${isMenuOpen ? 'open' : ''}`} 
+            onClick={toggleMenu}
+            aria-label="Menú"
+          >
+            <span className="hamburger-line"></span>
+            <span className="hamburger-line"></span>
+            <span className="hamburger-line"></span>
+          </button>
+        </div>
+
+        {/* --- Menú de Navegación --- */}
         <nav className={`navbar-links ${isMenuOpen ? 'open' : ''}`}>
+          {/* Cruz para cerrar - solo visible en móvil cuando está abierto */}
+          <button className="navbar-close" onClick={toggleMenu} aria-label="Cerrar menú">
+            <span className="close-line"></span>
+            <span className="close-line"></span>
+          </button>
+
           <NavLink to="/" className="navbar-link" onClick={toggleMenu}>
             Inicio
           </NavLink>
@@ -49,13 +76,6 @@ const Navbar = () => {
             Obtener App
           </NavLink>
         </nav>
-
-        {/* --- Parte Derecha: Botón de Descarga --- */}
-        <div className="navbar-actions">
-          <button className="navbar-button navbar-download" onClick={handleDownload}>
-            📱 Descargar App
-          </button>
-        </div>
 
       </div>
     </header>
