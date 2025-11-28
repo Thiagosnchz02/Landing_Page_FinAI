@@ -1,5 +1,5 @@
 import { Renderer, Program, Mesh, Color, Triangle } from "ogl";
-import { useEffect, useRef, memo } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import './Aurora.css';
 
@@ -109,6 +109,18 @@ void main() {
 }
 `;
 
+// Detectar si es móvil o dispositivo de bajo rendimiento
+const isMobile = () => {
+  if (typeof window === 'undefined') return false;
+  return window.innerWidth <= 768 || 
+         /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+};
+
+// Componente de fallback CSS para móvil (ligero)
+const AuroraCSSFallback = () => (
+  <div className="aurora-css-fallback" />
+);
+
 export default function Aurora(props) {
   const {
     colorStops = ["#3300FF", "#FD08BB", "#9909DC"],
@@ -119,16 +131,32 @@ export default function Aurora(props) {
   propsRef.current = props;
 
   const ctnDom = useRef(null);
+  const [useFallback, setUseFallback] = useState(false);
 
   useEffect(() => {
+    // Detectar móvil al montar
+    if (isMobile()) {
+      setUseFallback(true);
+      return;
+    }
+
     const ctn = ctnDom.current;
     if (!ctn) return;
 
-    const renderer = new Renderer({
-      alpha: true,
-      premultipliedAlpha: true,
-      antialias: true
-    });
+    let renderer;
+    try {
+      renderer = new Renderer({
+        alpha: true,
+        premultipliedAlpha: true,
+        antialias: false, // Desactivar antialiasing para mejor rendimiento
+        powerPreference: 'low-power' // Preferir ahorro de energía
+      });
+    } catch (e) {
+      // Si WebGL falla, usar fallback
+      setUseFallback(true);
+      return;
+    }
+
     const gl = renderer.gl;
     gl.clearColor(0, 0, 0, 0);
     gl.enable(gl.BLEND);
@@ -139,14 +167,28 @@ export default function Aurora(props) {
 
     function resize() {
       if (!ctn) return;
-      const width = ctn.offsetWidth;
-      const height = ctn.offsetHeight;
+      // Reducir resolución en pantallas grandes para mejor rendimiento
+      const dpr = Math.min(window.devicePixelRatio, 1.5);
+      const width = ctn.offsetWidth * dpr;
+      const height = ctn.offsetHeight * dpr;
       renderer.setSize(width, height);
+      gl.canvas.style.width = ctn.offsetWidth + 'px';
+      gl.canvas.style.height = ctn.offsetHeight + 'px';
       if (program) {
         program.uniforms.uResolution.value = [width, height];
       }
     }
-    window.addEventListener("resize", resize);
+    
+    // Throttle del resize para evitar llamadas excesivas
+    let resizeTimeout;
+    const throttledResize = () => {
+      if (resizeTimeout) return;
+      resizeTimeout = setTimeout(() => {
+        resize();
+        resizeTimeout = null;
+      }, 100);
+    };
+    window.addEventListener("resize", throttledResize);
 
     const geometry = new Triangle(gl);
     if (geometry.attributes.uv) {
@@ -174,17 +216,23 @@ export default function Aurora(props) {
     ctn.appendChild(gl.canvas);
 
     let animateId = 0;
+    let lastTime = 0;
+    const targetFPS = 30; // Limitar a 30 FPS para ahorro de batería
+    const frameInterval = 1000 / targetFPS;
+
     const update = (t) => {
       animateId = requestAnimationFrame(update);
+      
+      // Limitar FPS
+      const delta = t - lastTime;
+      if (delta < frameInterval) return;
+      lastTime = t - (delta % frameInterval);
+
       const { time = t * 0.01, speed = 1.0 } = propsRef.current;
       program.uniforms.uTime.value = time * speed * 0.1;
       program.uniforms.uAmplitude.value = propsRef.current.amplitude ?? 1.0;
       program.uniforms.uBlend.value = propsRef.current.blend ?? blend;
-      const stops = propsRef.current.colorStops ?? colorStops;
-      program.uniforms.uColorStops.value = stops.map((hex) => {
-        const c = new Color(hex);
-        return [c.r, c.g, c.b];
-      });
+      
       renderer.render({ scene: mesh });
     };
     animateId = requestAnimationFrame(update);
@@ -193,7 +241,8 @@ export default function Aurora(props) {
 
     return () => {
       cancelAnimationFrame(animateId);
-      window.removeEventListener("resize", resize);
+      window.removeEventListener("resize", throttledResize);
+      if (resizeTimeout) clearTimeout(resizeTimeout);
       if (ctn && gl.canvas.parentNode === ctn) {
         ctn.removeChild(gl.canvas);
       }
@@ -201,6 +250,11 @@ export default function Aurora(props) {
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [amplitude]);
+
+  // Usar fallback CSS en móvil
+  if (useFallback) {
+    return <AuroraCSSFallback />;
+  }
 
   return <div ref={ctnDom} className="aurora-container" />;
 }

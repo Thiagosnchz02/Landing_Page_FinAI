@@ -129,15 +129,21 @@
 }
 
 @media (max-width: 768px) {
-  .hero-brand {
-    font-size: 4rem;
+  .hero-section {
+    min-height: 80vh;
+    padding: 0 1rem;
   }
+
+  .hero-brand {
+    font-size: 2.5rem;
+  }
+
   .hero-title {
-    font-size: 4.5rem;
+    font-size: 2rem;
   }
 
   .features-section {
-    padding: 4rem 1rem;
+    padding: 3rem 1rem;
   }
 
   .features-section__grid {
@@ -146,8 +152,15 @@
   }
 
   .features-section__title {
-    font-size: 1.75rem;
-    margin-bottom: 2.5rem;
+    font-size: 1.5rem;
+    margin-bottom: 2rem;
+  }
+}
+
+/* Reducir animaciones en móvil */
+@media (max-width: 768px), (prefers-reduced-motion: reduce) {
+  .feature-card-aura {
+    display: none;
   }
 }
 

@@ -4,12 +4,36 @@
 
 body {
   margin: 0;
-  /* Aplicamos Inter como fuente principal */
   font-family: 'Inter', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: #000000;
-  overflow-x: hidden; /* <-- SOLUCIÓN: Evita el desbordamiento horizontal */
+  overflow-x: hidden;
+}
+
+/* Optimizaciones de rendimiento */
+@media (max-width: 768px) {
+  * {
+    /* Desactivar animaciones costosas en móvil */
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.2s !important;
+  }
+  
+  /* Re-habilitar animaciones específicas que queremos */
+  .aurora-css-fallback,
+  .rotating-text {
+    animation-duration: 15s !important;
+    animation-iteration-count: infinite !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
 
 * {

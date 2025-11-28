@@ -5,14 +5,13 @@ import './TiltedCard.css';
 
 // Hook simple para detectar el tamaño de la ventana
 const useIsMobile = () => {
-  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth <= 768);
-    };
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
+    const check = () => setIsMobile(window.innerWidth <= 768);
+    check();
+    window.addEventListener('resize', check);
+    return () => window.removeEventListener('resize', check);
   }, []);
 
   return isMobile;
@@ -24,17 +23,19 @@ export default function TiltedCard({
   containerHeight = '400px',
   overlayContent = null,
   rotateAmplitude = 12,
-  scaleOnHover = 1.05
+  scaleOnHover = 1.05,
+  disableTilt = false
 }) {
   const ref = useRef(null);
-  const isMobile = useIsMobile(); // Detectamos si es móvil
+  const isMobile = useIsMobile();
+  const shouldDisable = isMobile || disableTilt;
 
   const rotateX = useSpring(useMotionValue(0), springValues);
   const rotateY = useSpring(useMotionValue(0), springValues);
   const scale = useSpring(1, springValues);
 
   function handleMouse(e) {
-    if (isMobile || !ref.current) return; // Si es móvil, no hace NADA
+    if (shouldDisable || !ref.current) return;
     
     const rect = ref.current.getBoundingClientRect();
     const offsetX = e.clientX - rect.left - rect.width / 2;
@@ -46,22 +47,21 @@ export default function TiltedCard({
   }
 
   function handleMouseEnter() {
-    if (isMobile) return;
+    if (shouldDisable) return;
     scale.set(scaleOnHover);
   }
 
   function handleMouseLeave() {
-    if (isMobile) return;
+    if (shouldDisable) return;
     scale.set(1);
     rotateX.set(0);
     rotateY.set(0);
   }
 
   return (
-    // Añadimos una clase 'is-mobile' para que el CSS pueda reaccionar
     <figure
       ref={ref}
-      className={`tilted-card-figure ${isMobile ? 'is-mobile' : ''}`}
+      className={`tilted-card-figure ${shouldDisable ? 'is-mobile' : ''}`}
       style={{ height: containerHeight }}
       onMouseMove={handleMouse}
       onMouseEnter={handleMouseEnter}
@@ -69,11 +69,10 @@ export default function TiltedCard({
     >
       <motion.div
         className="tilted-card-inner"
-        // Si es móvil, los valores de animación se quedan en su estado inicial
         style={{
-          rotateX: isMobile ? 0 : rotateX,
-          rotateY: isMobile ? 0 : rotateY,
-          scale: isMobile ? 1 : scale,
+          rotateX: shouldDisable ? 0 : rotateX,
+          rotateY: shouldDisable ? 0 : rotateY,
+          scale: shouldDisable ? 1 : scale,
         }}
       >
         {overlayContent}
