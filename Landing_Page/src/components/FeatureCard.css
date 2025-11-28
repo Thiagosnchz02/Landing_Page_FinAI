@@ -1,0 +1,203 @@
+/* src/components/FeatureCard.css */
+
+/* ============================
+   FEATURE CARD WRAPPER
+   ============================ */
+
+.feature-card-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 350px;
+  height: 420px;
+  
+  /* Animación de entrada escalonada */
+  opacity: 0;
+  transform: translateY(40px);
+  animation: featureCardEntry 0.7s ease-out forwards;
+  animation-delay: var(--animation-delay, 0.2s);
+}
+
+@keyframes featureCardEntry {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ============================
+   AURA EFFECT
+   ============================ */
+
+.feature-card-aura {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 120%;
+  height: 120%;
+  background: radial-gradient(
+    circle,
+    color-mix(in srgb, var(--aura-color) 30%, transparent) 0%,
+    transparent 70%
+  );
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  pointer-events: none;
+  filter: blur(20px);
+}
+
+.feature-card-aura.is-active {
+  opacity: 1;
+}
+
+/* Variantes de color por tipo */
+.feature-card-wrapper--ai-assistant .feature-card-aura {
+  background: radial-gradient(circle, rgba(253, 8, 187, 0.35) 0%, transparent 70%);
+}
+
+.feature-card-wrapper--control .feature-card-aura {
+  background: radial-gradient(circle, rgba(0, 21, 255, 0.35) 0%, transparent 70%);
+}
+
+.feature-card-wrapper--independence .feature-card-aura {
+  background: radial-gradient(circle, rgba(153, 0, 255, 0.35) 0%, transparent 70%);
+}
+
+/* ============================
+   CARD CONTENT
+   ============================ */
+
+.feature-card-content {
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  padding: 2rem 1.5rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  background: rgba(15, 15, 25, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+  backdrop-filter: blur(10px);
+  transition: 
+    transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+    border-color 0.4s ease,
+    box-shadow 0.4s ease;
+  overflow: hidden;
+}
+
+.feature-card-content.is-hovered {
+  border-color: rgba(255, 255, 255, 0.15);
+  box-shadow: 
+    0 20px 40px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+/* Variantes de borde por tipo al hover */
+.feature-card-wrapper--ai-assistant .feature-card-content.is-hovered {
+  border-color: rgba(253, 8, 187, 0.3);
+}
+
+.feature-card-wrapper--control .feature-card-content.is-hovered {
+  border-color: rgba(0, 21, 255, 0.3);
+}
+
+.feature-card-wrapper--independence .feature-card-content.is-hovered {
+  border-color: rgba(153, 0, 255, 0.3);
+}
+
+/* ============================
+   TYPOGRAPHY
+   ============================ */
+
+.feature-card-title {
+  font-size: 1.4rem;
+  font-weight: 600;
+  margin: 0 0 0.75rem 0;
+  color: #ffffff;
+  letter-spacing: -0.02em;
+  transition: color 0.3s ease;
+}
+
+/* Colores de título por tipo */
+.feature-card-wrapper--ai-assistant .feature-card-title {
+  background: linear-gradient(135deg, #fff 0%, #FD08BB 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.feature-card-wrapper--control .feature-card-title {
+  background: linear-gradient(135deg, #fff 0%, #0015FF 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.feature-card-wrapper--independence .feature-card-title {
+  background: linear-gradient(135deg, #fff 0%, #9900FF 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.feature-card-description {
+  font-size: 0.95rem;
+  color: rgba(255, 255, 255, 0.65);
+  line-height: 1.6;
+  margin: 0;
+  max-width: 280px;
+  transition: color 0.3s ease;
+}
+
+.feature-card-content.is-hovered .feature-card-description {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/* ============================
+   RESPONSIVE
+   ============================ */
+
+@media (max-width: 1024px) {
+  .feature-card-wrapper {
+    max-width: 320px;
+    height: 400px;
+  }
+}
+
+@media (max-width: 768px) {
+  .feature-card-wrapper {
+    max-width: 100%;
+    height: 380px;
+  }
+
+  .feature-card-content {
+    padding: 1.5rem 1.25rem;
+  }
+
+  .feature-card-title {
+    font-size: 1.25rem;
+  }
+
+  .feature-card-description {
+    font-size: 0.9rem;
+  }
+
+  /* Desactivar aura en móvil para mejor rendimiento */
+  .feature-card-aura {
+    display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .feature-card-wrapper {
+    height: 360px;
+  }
+
+  .feature-card-content {
+    padding: 1.25rem 1rem;
+  }
+}

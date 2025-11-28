@@ -34,55 +34,100 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 4rem;
+  gap: 5rem;
 }
 
-/* Nuevo contenedor para cada tarjeta y su título */
-.qr-card-wrapper {
+.qr-card-item {
+  width: 280px;
+}
+
+/* Contenedor 3D principal */
+.qr-3d-container {
+  position: relative;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 1.5rem;
-
-  /* Estilos de la tarjeta */
-  background: rgba(25, 25, 35, 0.5);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 1.5rem;
-  padding: 2rem;
-  padding-bottom: 1.5rem;
-}
-
-/* Nuevo título para la plataforma (iOS/Android) */
-.qr-platform-title {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  font-size: 1.25rem;
-  font-weight: 500;
-  color: #a0a0a0;
-}
-
-/* Estilos para el QR dentro de la tarjeta */
-.qr-overlay {
-  /* Quitamos el fondo negro y el padding */
-  background-color: transparent; 
-  border-radius: 15px;
-  display: flex;
   align-items: center;
   justify-content: center;
   width: 100%;
   height: 100%;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 
-    inset 1px 1px 3px rgba(255, 255, 255, 0.2),
-    /* Aumentamos el desplazamiento (15px), el desenfoque (35px) y la opacidad (0.6) */
-    15px 15px 35px rgba(0, 0, 0, 0.6);
-  transform: scale(0.9);
+  padding: 1.5rem;
 }
 
-/* Hacemos el SVG del QR un poco opaco */
-.qr-overlay svg {
-  opacity: 0.85;
+/* Efecto glow detrás del QR */
+.qr-glow {
+  position: absolute;
+  width: 200px;
+  height: 200px;
+  border-radius: 30px;
+  filter: blur(40px);
+  opacity: 0.5;
+  z-index: 0;
+  transition: opacity 0.3s ease;
+}
+
+.qr-ios .qr-glow {
+  background: linear-gradient(135deg, #FC3DF3 0%, #4D0FFF 100%);
+}
+
+.qr-android .qr-glow {
+  background: linear-gradient(135deg, #00C853 0%, #69F0AE 100%);
+}
+
+.qr-3d-container:hover .qr-glow {
+  opacity: 0.7;
+}
+
+/* Wrapper del código QR con efecto glassmorphism */
+.qr-code-wrapper {
+  position: relative;
+  z-index: 1;
+  background: rgba(20, 20, 30, 0.6);
+  backdrop-filter: blur(20px);
+  border-radius: 24px;
+  padding: 1.5rem;
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.4),
+    0 0 0 1px rgba(255, 255, 255, 0.05),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  transition: all 0.3s ease;
+}
+
+.qr-3d-container:hover .qr-code-wrapper {
+  box-shadow: 
+    0 16px 48px rgba(0, 0, 0, 0.5),
+    0 0 0 1px rgba(255, 255, 255, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15);
+}
+
+.qr-code-wrapper svg {
+  display: block;
+}
+
+/* Label debajo del QR */
+.qr-label {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1.25rem;
+  font-size: 1rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.7);
+  transition: color 0.3s ease;
+}
+
+.qr-3d-container:hover .qr-label {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.qr-icon {
+  font-size: 1.25rem;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.qr-3d-container:hover .qr-icon {
+  color: rgba(255, 255, 255, 0.9);
 }
 
 

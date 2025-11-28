@@ -31,37 +31,41 @@ const QRPage = () => {
       </div>
 
       <div className="qr-cards-container">
-        {/* --- Tarjeta para iOS --- */}
-        <div className="qr-card-wrapper">
-          <h3 className="qr-platform-title"><FaApple /> iOS</h3>
+        {/* --- QR para iOS --- */}
+        <div className="qr-card-item">
           <TiltedCard
-            containerWidth="300px"
-            containerHeight="300px"
-            imageWidth="300px"   // <-- AÑADE ESTA LÍNEA
-            imageHeight="300px"
+            containerHeight="280px"
             overlayContent={
-              <div className="qr-overlay">
-                <QRCodeSVG value={appStoreUrl} {...qrCodeProps} />
+              <div className="qr-3d-container qr-ios">
+                <div className="qr-glow"></div>
+                <div className="qr-code-wrapper">
+                  <QRCodeSVG value={appStoreUrl} {...qrCodeProps} />
+                </div>
+                <div className="qr-label">
+                  <FaApple className="qr-icon" />
+                  <span>App Store</span>
+                </div>
               </div>
             }
-            displayOverlayContent={true}
           />
         </div>
 
-        {/* --- Tarjeta para Android --- */}
-        <div className="qr-card-wrapper">
-          <h3 className="qr-platform-title"><FaGooglePlay /> Android</h3>
+        {/* --- QR para Android --- */}
+        <div className="qr-card-item">
           <TiltedCard
-            containerWidth="300px"
-            containerHeight="300px"
-            imageWidth="300px"   // <-- AÑADE ESTA LÍNEA
-            imageHeight="300px"
+            containerHeight="280px"
             overlayContent={
-              <div className="qr-overlay">
-                <QRCodeSVG value={playStoreUrl} {...qrCodeProps} />
+              <div className="qr-3d-container qr-android">
+                <div className="qr-glow"></div>
+                <div className="qr-code-wrapper">
+                  <QRCodeSVG value={playStoreUrl} {...qrCodeProps} />
+                </div>
+                <div className="qr-label">
+                  <FaGooglePlay className="qr-icon" />
+                  <span>Google Play</span>
+                </div>
               </div>
             }
-            displayOverlayContent={true}
           />
         </div>
       </div>

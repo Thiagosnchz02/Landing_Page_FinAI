@@ -2,30 +2,36 @@
 import React from 'react';
 import RotatingText from '../components/RotatingText';
 import { useNavigate } from 'react-router-dom';
-import { usePageContext } from '../components/Layout';
 import '../components/RotatingText.css';
-import TiltedCard from '../components/TiltedCard';
-import './Home.css'; // <-- 1. Importamos el nuevo CSS de la página
+import FeatureCard from '../components/FeatureCard';
+import './Home.css';
 
-// Datos para las tarjetas
+// Datos para las tarjetas con tipos de animación
 const features = [
   {
     title: 'Asistencia Personalizada',
     description: 'Accede a la mejor ayuda personalizada con IA para ti y tu dinero. En cualquier momento y lugar.',
+    animationType: 'ai-assistant',
   },
   {
     title: 'Control Total',
-    description: 'Aprende a controlar tu dinero y dominar el mundo de la economía de forma sencilla con nuestros cursos.',
+    description: 'Visualiza tus finanzas, establece presupuestos y controla cada euro de forma sencilla e intuitiva.',
+    animationType: 'control',
   },
   {
     title: 'Independencia Financiera',
-    description: 'Da un paso más hacia tu independencia financiera. Con FinAi, toma decisiones inteligentes y crece económicamente.',
+    description: 'Alcanza tus metas de ahorro, haz crecer tu dinero y da el paso hacia tu libertad financiera.',
+    animationType: 'independence',
   },
 ];
 
 const Home = () => {
     const navigate = useNavigate();
-    const { onRegisterOpen, onLoginOpen } = usePageContext();
+    
+    const handleDownload = () => {
+      navigate('/qr');
+    };
+
     const rotatingWords = [
         { text: 'girl Math', color: '#EA00FF'},
         { text: 'curiosos', color: '#0015FF' },
@@ -53,15 +59,6 @@ const Home = () => {
                     <RotatingText words={rotatingWords} />
                 </span>
             </h1>
-            <div className="hero-actions">
-                <button className="hero-button" onClick={onLoginOpen}>
-                    Login
-                </button>
-                {/* Botón que abre el Modal */}
-                <button className="hero-button hero-button--secondary" onClick={onRegisterOpen}>
-                    Register
-                </button>
-            </div>
         </div>
     </div>
       <section className="features-section">
@@ -70,18 +67,13 @@ const Home = () => {
         </h2>
         <div className="features-section__grid">
           {features.map((feature, index) => (
-            <div key={index} className="feature-card-wrapper">
-              <TiltedCard
-                containerHeight="400px" // Ajusta la altura de la tarjeta
-                overlayContent={
-                  <div className="feature-card-content">
-                    <h3>{feature.title}</h3>
-                    <p>{feature.description}</p>
-                  </div>
-                }
-                displayOverlayContent={true}
-              />
-            </div>
+            <FeatureCard
+              key={index}
+              index={index}
+              title={feature.title}
+              description={feature.description}
+              animationType={feature.animationType}
+            />
           ))}
         </div>
       </section>

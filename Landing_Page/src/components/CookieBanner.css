@@ -1,0 +1,239 @@
+/* src/components/CookieBanner.css */
+.cookie-banner-overlay {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 9999;
+  padding: 1rem;
+  pointer-events: none;
+}
+
+.cookie-banner {
+  max-width: 900px;
+  margin: 0 auto;
+  background: rgba(20, 20, 30, 0.95);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 1.25rem;
+  padding: 1.5rem;
+  pointer-events: auto;
+  
+  /* Animación de entrada */
+  animation: slideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.cookie-banner-content {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.cookie-icon {
+  font-size: 2rem;
+  flex-shrink: 0;
+}
+
+.cookie-text h3 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: white;
+  margin: 0 0 0.5rem;
+}
+
+.cookie-text p {
+  font-size: 0.9rem;
+  color: #a0a0a0;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.cookie-text a {
+  color: #FD08BB;
+  text-decoration: none;
+  margin-left: 0.25rem;
+}
+
+.cookie-text a:hover {
+  text-decoration: underline;
+}
+
+.cookie-banner-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  justify-content: flex-end;
+}
+
+.cookie-btn {
+  padding: 0.75rem 1.25rem;
+  border-radius: 0.75rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: none;
+}
+
+.cookie-btn-primary {
+  background: linear-gradient(135deg, #FC3DF3 0%, #4D0FFF 100%);
+  color: white;
+}
+
+.cookie-btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(253, 8, 187, 0.3);
+}
+
+.cookie-btn-secondary {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
+}
+
+.cookie-btn-secondary:hover {
+  border-color: rgba(253, 8, 187, 0.5);
+  background: rgba(253, 8, 187, 0.1);
+}
+
+/* Preferencias */
+.cookie-preferences {
+  margin-bottom: 1.5rem;
+}
+
+.cookie-preferences h3 {
+  font-size: 1.1rem;
+  color: white;
+  margin: 0 0 1.25rem;
+}
+
+.cookie-preference-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.preference-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.preference-name {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: white;
+}
+
+.preference-desc {
+  font-size: 0.8rem;
+  color: #6b7280;
+}
+
+/* Toggle switch */
+.cookie-toggle {
+  position: relative;
+  display: inline-block;
+  width: 48px;
+  height: 26px;
+  flex-shrink: 0;
+}
+
+.cookie-toggle input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.toggle-slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 26px;
+  transition: 0.3s;
+}
+
+.toggle-slider:before {
+  position: absolute;
+  content: "";
+  height: 20px;
+  width: 20px;
+  left: 3px;
+  bottom: 3px;
+  background: white;
+  border-radius: 50%;
+  transition: 0.3s;
+}
+
+.cookie-toggle input:checked + .toggle-slider {
+  background: linear-gradient(135deg, #FC3DF3 0%, #4D0FFF 100%);
+}
+
+.cookie-toggle input:checked + .toggle-slider:before {
+  transform: translateX(22px);
+}
+
+.cookie-toggle.disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.cookie-toggle.disabled .toggle-slider {
+  cursor: not-allowed;
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  .cookie-banner {
+    padding: 1.25rem;
+    border-radius: 1rem 1rem 0 0;
+  }
+  
+  .cookie-banner-overlay {
+    padding: 0;
+  }
+
+  .cookie-banner-content {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .cookie-icon {
+    margin: 0 auto;
+  }
+
+  .cookie-banner-actions {
+    flex-direction: column;
+  }
+
+  .cookie-btn {
+    width: 100%;
+    text-align: center;
+  }
+
+  .cookie-preference-item {
+    flex-direction: column;
+    gap: 0.75rem;
+    text-align: center;
+  }
+}

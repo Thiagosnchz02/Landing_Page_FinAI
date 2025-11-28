@@ -1,79 +1,61 @@
 /* src/pages/Home.css */
 
-/* --- SECCIÓN HERO --- */
+/* --- SECCIÓN HERO (Mobile-First) --- */
 .hero-section {
   min-height: 100vh;
   display: flex;
-  flex-direction: column;
-  justify-content: center; /* Centrado verticalmente */
-  align-items: flex-start;  /* Alineado a la izquierda */
+  justify-content: center;
+  align-items: center;
   color: white;
-  padding-left: 155px; /* El espaciado izquierdo de Figma */
-}
-
-/* Reducimos el padding en pantallas pequeñas */
-@media (max-width: 768px) {
-  .hero-section {
-    padding-left: 2rem;
-    padding-right: 2rem;
-  }
+  padding: 0 1rem;
+  overflow-x: hidden;
 }
 
 .hero-content {
-  text-align: left; /* Alineamos el texto a la izquierda */
+  text-align: center;
+  width: 100%;
+  margin: auto;
 }
 
 .hero-brand {
-  font-size: 60px; /* <-- TAMAÑO MÁS PEQUEÑO */
+  font-size: 3rem;
   line-height: 1;
-  margin-bottom: 0.5rem; /* Espacio debajo de la marca */
+  margin-bottom: 0.5rem;
 }
 
-/* Estilos para "Fin" */
 .hero-brand--light-italic {
   font-weight: 300;
   font-style: italic;
 }
 
-/* Estilos para "Ai" */
 .hero-brand--medium-italic {
   font-weight: 500;
   font-style: italic;
-  color: #FD08BB; /* <-- AÑADIMOS EL COLOR FUCSIA */
+  color: #FD08BB;
 }
 
-/* Título principal (antes .hero-subtitle) */
 .hero-title {
-  font-size: 80px;
+  font-size: 2.5rem;
   font-weight: 300;
   line-height: 1.1;
   display: flex;
-  flex-direction: column; /* <-- CLAVE: Cambiamos la dirección a vertical */
-  align-items: flex-start; /* <-- CLAVE: Alineamos los items a la izquierda */
+  flex-direction: column;
+  align-items: center;
   margin-top: 1rem;
   color: rgba(255, 255, 255, 0.5);
 }
 
 .hero-subtitle-line {
-  display: inline-flex; /* Hace que se comporte como un bloque flexible en línea */
-  align-items: center;   /* Centra verticalmente "app for" con la animación */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
 }
 
-/* Ajustes de tamaño para pantallas grandes */
-@media (min-width: 768px) {
-  .hero-brand {
-    font-size: 72px;
-  }
-  .hero-title {
-    font-size: 94px;
-  }
-}
-
-/* ... (Los estilos de los botones .hero-actions y .hero-button no cambian) ... */
 .hero-actions {
   margin-top: 2.5rem;
   display: flex;
-  /* Ya no centramos, se alinea al contenedor izquierdo */
+  justify-content: center;
   gap: 1rem;
 }
 
@@ -88,135 +70,105 @@
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
+
 .hero-button:hover {
   background-color: rgba(255, 255, 255, 0.3);
 }
+
 .hero-button--secondary {
   background-color: transparent;
   border-color: rgba(255, 255, 255, 0.3);
 }
+
 .hero-button--secondary:hover {
   background-color: rgba(255, 255, 255, 0.2);
 }
 
 
 /* --- SECCIÓN "POR QUÉ ELEGIR FINAI" --- */
-/* ... (los estilos de .features-section no cambian) ... */
 .features-section {
   width: 100%;
-  max-width: 1024px;
+  max-width: 1200px;
   margin-left: auto;
   margin-right: auto;
-  padding: 4rem 1rem;
+  padding: 6rem 1.5rem;
   color: white;
 }
-@media (min-width: 640px) {
-  .features-section {
-    padding-top: 6rem;
-    padding-bottom: 6rem;
-  }
-}
+
 .features-section__title {
-  font-size: 2.25rem;
-  line-height: 2.5rem;
+  font-size: 2.5rem;
+  line-height: 1.2;
   font-weight: 700;
   text-align: center;
-  margin-bottom: 3rem;
+  margin-bottom: 4rem;
+  background: linear-gradient(135deg, #ffffff 0%, rgba(255, 255, 255, 0.7) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
+
 .features-section__grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 3rem;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
   justify-items: center;
 }
 
-.feature-card-wrapper {
-  position: relative; /* Necesario para el efecto de aura */
-  width: 100%;
-  max-width: 350px;
 
-  /* Animación de entrada escalonada */
-  opacity: 0;
-  transform: translateY(30px);
-  animation: card-entry 0.6s ease-out forwards;
-}
+/* --- Media Queries --- */
 
-/* Retraso para cada tarjeta */
-.feature-card-wrapper:nth-child(1) { animation-delay: 0.2s; }
-.feature-card-wrapper:nth-child(2) { animation-delay: 0.4s; }
-.feature-card-wrapper:nth-child(3) { animation-delay: 0.6s; }
-
-@keyframes card-entry {
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* Efecto de "aura" o foco de luz al hacer hover */
-.feature-card-wrapper::after {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 150%;
-  height: 150%;
-  background: radial-gradient(circle, #FD08BB4D 0%, transparent 70%);
-  z-index: -1;
-  opacity: 0;
-  transition: opacity 0.4s ease;
-}
-
-.feature-card-wrapper:hover::after {
-  opacity: 1;
-}
-
-/* Contenido dentro de la TiltedCard */
-.feature-card-content {
-  padding: 2rem;
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-  background: rgba(25, 25, 35, 0.7);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 15px; /* Debe coincidir con el border-radius de TiltedCard.css */
-}
-
-.feature-card-content h3 {
-  font-size: 1.5rem;
-  font-weight: 500;
-  margin: 0 0 1rem 0;
-}
-.feature-card-content p {
-  color: #a0a0a0;
-  line-height: 1.6;
-}
-@media (min-width: 768px) {
+@media (max-width: 1024px) {
   .features-section__grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+
+  .features-section__title {
+    font-size: 2rem;
   }
 }
-.feature-card {
-  background-color: rgba(31, 41, 55, 0.5);
-  border-radius: 0.5rem;
-  padding: 1.5rem;
-  text-align: center;
+
+@media (max-width: 768px) {
+  .hero-brand {
+    font-size: 4rem;
+  }
+  .hero-title {
+    font-size: 4.5rem;
+  }
+
+  .features-section {
+    padding: 4rem 1rem;
+  }
+
+  .features-section__grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .features-section__title {
+    font-size: 1.75rem;
+    margin-bottom: 2.5rem;
+  }
 }
-.feature-card__image-placeholder {
-  background-color: #374151;
-  height: 12rem;
-  width: 100%;
-  border-radius: 0.375rem;
-  margin-bottom: 1rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #9CA3AF;
-}
-.feature-card__description {
-  color: #D1D5DB;
+
+@media (min-width: 992px) {
+  .hero-section {
+    align-items: center;
+    padding: 0 2rem;
+  }
+  .hero-content {
+    text-align: center;
+  }
+  .hero-title,
+  .hero-subtitle-line,
+  .hero-actions {
+    align-items: center;
+    justify-content: center;
+  }
+  .hero-brand {
+    font-size: 5rem;
+  }
+  .hero-title {
+    font-size: 5.5rem;
+  }
 }

@@ -1,0 +1,154 @@
+/* src/pages/Legal.css */
+.legal-page {
+  color: white;
+  min-height: 100vh;
+  padding: 8rem 2rem 4rem;
+}
+
+.legal-container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.legal-page h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  background: linear-gradient(135deg, #FC3DF3 0%, #4D0FFF 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.legal-updated {
+  color: #6b7280;
+  font-size: 0.9rem;
+  margin-bottom: 3rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.legal-section {
+  margin-bottom: 2.5rem;
+}
+
+.legal-section h2 {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #e0e0e0;
+  margin-bottom: 1rem;
+}
+
+.legal-section h3 {
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: #d0d0d0;
+  margin: 1.5rem 0 0.75rem;
+}
+
+.legal-section p {
+  color: #a0a0a0;
+  line-height: 1.7;
+  margin-bottom: 1rem;
+}
+
+.legal-section ul {
+  list-style: none;
+  padding: 0;
+  margin: 1rem 0;
+}
+
+.legal-section li {
+  position: relative;
+  padding-left: 1.5rem;
+  margin-bottom: 0.75rem;
+  color: #a0a0a0;
+  line-height: 1.6;
+}
+
+.legal-section li::before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: #FD08BB;
+}
+
+.legal-section a {
+  color: #FD08BB;
+  text-decoration: none;
+  transition: opacity 0.3s ease;
+}
+
+.legal-section a:hover {
+  opacity: 0.8;
+  text-decoration: underline;
+}
+
+.legal-section strong {
+  color: #e0e0e0;
+}
+
+.contact-info {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 1rem;
+  padding: 1.25rem 1.5rem;
+  margin-top: 1rem;
+}
+
+.contact-info strong {
+  color: white;
+}
+
+/* Tabla de cookies */
+.cookie-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5rem 0;
+  font-size: 0.9rem;
+}
+
+.cookie-table th,
+.cookie-table td {
+  padding: 1rem;
+  text-align: left;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.cookie-table th {
+  background: rgba(253, 8, 187, 0.1);
+  color: #e0e0e0;
+  font-weight: 600;
+}
+
+.cookie-table td {
+  color: #a0a0a0;
+}
+
+.cookie-table tr:hover td {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .legal-page {
+    padding: 6rem 1rem 3rem;
+  }
+
+  .legal-page h1 {
+    font-size: 2rem;
+  }
+
+  .legal-section h2 {
+    font-size: 1.25rem;
+  }
+
+  .cookie-table {
+    font-size: 0.8rem;
+  }
+
+  .cookie-table th,
+  .cookie-table td {
+    padding: 0.75rem 0.5rem;
+  }
+}

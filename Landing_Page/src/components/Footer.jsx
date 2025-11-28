@@ -2,7 +2,7 @@
 import React from 'react';
 import { FaXTwitter, FaInstagram, FaTiktok, FaLinkedin, FaWhatsapp } from 'react-icons/fa6';
 import LogoLoop from './LogoLoop';
-import './Footer.css'; // <-- Importamos el CSS del footer
+import './Footer.css';
 
 const socialLogos = [
   { node: <FaXTwitter />, title: "X (Twitter)", href: "https://x.com/AppFinai" },
@@ -13,6 +13,8 @@ const socialLogos = [
 ];
 
 const Footer = () => {
+  const currentYear = new Date().getFullYear();
+  
   return (
     <footer className="footer">
       <div className="footer-container">
@@ -23,9 +25,23 @@ const Footer = () => {
           gap={80}
           pauseOnHover
           fadeOut
-          fadeOutColor="#111827" // Color del fondo de la app
-          className="footer-logoloop" // Clase para estilos específicos si se necesitaran
+          fadeOutColor="#111827"
+          className="footer-logoloop"
         />
+        
+        {/* Sección Legal */}
+        <div className="footer-legal">
+          <div className="legal-links">
+            <a href="/privacidad" className="legal-link">Política de Privacidad</a>
+            <span className="legal-separator">·</span>
+            <a href="/terminos" className="legal-link">Términos de Uso</a>
+            <span className="legal-separator">·</span>
+            <a href="/cookies" className="legal-link">Política de Cookies</a>
+          </div>
+          <p className="copyright">
+            © {currentYear} FinAi. Todos los derechos reservados.
+          </p>
+        </div>
       </div>
     </footer>
   );

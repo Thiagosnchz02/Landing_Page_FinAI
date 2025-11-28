@@ -1,0 +1,387 @@
+/* src/components/FlipProfileCard.css */
+
+.flip-card {
+  width: 100%;
+  max-width: 220px;
+  aspect-ratio: 0.718;
+  perspective: 1000px;
+  cursor: pointer;
+}
+
+.flip-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.7s cubic-bezier(0.4, 0.0, 0.2, 1);
+  transform-style: preserve-3d;
+}
+
+.flip-card.flipped .flip-card-inner {
+  transform: rotateY(180deg);
+}
+
+/* --- Estilos comunes para ambas caras --- */
+.flip-card-front,
+.flip-card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  border-radius: 24px;
+  overflow: hidden;
+}
+
+/* Efecto glow detrás de la card */
+.flip-card-glow {
+  position: absolute;
+  inset: -20px;
+  background: radial-gradient(
+    circle at 50% 50%,
+    rgba(252, 61, 243, 0.4) 0%,
+    rgba(77, 15, 255, 0.3) 50%,
+    transparent 70%
+  );
+  filter: blur(35px);
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  z-index: -1;
+}
+
+.flip-card:hover .flip-card-glow,
+.flip-card.flipped .flip-card-glow {
+  opacity: 1;
+}
+
+/* --- PARTE TRASERA (visible por defecto) --- */
+.flip-card-back {
+  background: 
+    radial-gradient(circle at 30% 20%, rgba(252, 61, 243, 0.15) 0%, transparent 50%),
+    radial-gradient(circle at 70% 80%, rgba(77, 15, 255, 0.15) 0%, transparent 50%),
+    linear-gradient(145deg, #1A0B2E, #2A1C42);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.4),
+    0 0 0 1px rgba(255, 255, 255, 0.05);
+}
+
+.flip-back-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 1.5rem;
+  gap: 0.5rem;
+}
+
+.flip-back-icon {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 0.5rem;
+}
+
+.flip-back-icon svg {
+  width: 26px;
+  height: 26px;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.flip-back-name {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin: 0;
+  background: linear-gradient(to bottom, #fff, #a0a0c0);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.flip-back-title {
+  font-size: 0.8rem;
+  font-weight: 500;
+  margin: 0;
+  color: rgba(255, 255, 255, 0.6);
+  max-width: 180px;
+}
+
+.flip-back-hint {
+  font-size: 1.5rem;
+  margin-top: 0.75rem;
+  opacity: 0.5;
+  transition: all 0.3s ease;
+  animation: pulse-hint 2s ease-in-out infinite;
+}
+
+@keyframes pulse-hint {
+  0%, 100% { transform: scale(1); opacity: 0.5; }
+  50% { transform: scale(1.1); opacity: 0.8; }
+}
+
+.flip-card:hover .flip-back-hint {
+  opacity: 0.9;
+  transform: scale(1.2);
+}
+
+/* --- PARTE FRONTAL (foto) --- */
+.flip-card-front {
+  transform: rotateY(180deg);
+  background: linear-gradient(145deg, #1A0B2E, #2A1C42);
+  box-shadow: 
+    rgba(187, 14, 255, 0.6) 0px 5px 25px -5px,
+    0 0 0 1px rgba(255, 255, 255, 0.1);
+}
+
+/* Efecto de brillo holográfico */
+.flip-card-front::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: 
+    radial-gradient(
+      farthest-side circle at 30% 20%,
+      rgba(252, 61, 243, 0.4) 0%,
+      transparent 50%
+    ),
+    radial-gradient(
+      farthest-side circle at 70% 60%,
+      rgba(77, 15, 255, 0.3) 0%,
+      transparent 50%
+    );
+  z-index: 1;
+  pointer-events: none;
+  mix-blend-mode: overlay;
+}
+
+/* Efecto shine que se mueve */
+.flip-card-front::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    105deg,
+    transparent 40%,
+    rgba(255, 255, 255, 0.15) 45%,
+    rgba(255, 255, 255, 0.3) 50%,
+    rgba(255, 255, 255, 0.15) 55%,
+    transparent 60%
+  );
+  z-index: 3;
+  pointer-events: none;
+  animation: shine-sweep 3s ease-in-out infinite;
+}
+
+@keyframes shine-sweep {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+.flip-front-image {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  z-index: 0;
+}
+
+.flip-front-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  mix-blend-mode: luminosity;
+  opacity: 0.9;
+  mask-image: linear-gradient(
+    to bottom,
+    rgba(0,0,0,1) 0%,
+    rgba(0,0,0,1) 70%,
+    rgba(0,0,0,0) 100%
+  );
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    rgba(0,0,0,1) 0%,
+    rgba(0,0,0,1) 70%,
+    rgba(0,0,0,0) 100%
+  );
+}
+
+.flip-front-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    rgba(10, 5, 20, 0.95) 0%,
+    rgba(10, 5, 20, 0.6) 25%,
+    transparent 60%
+  );
+  display: flex;
+  align-items: flex-end;
+  padding: 1.25rem;
+  z-index: 2;
+}
+
+.flip-front-info {
+  text-align: left;
+}
+
+.flip-front-info h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 0 0 0.2rem 0;
+  background: linear-gradient(to bottom, #fff, #c0c0e0);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.flip-front-info p {
+  font-size: 0.75rem;
+  margin: 0;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+/* --- Responsive --- */
+@media (max-width: 1200px) {
+  .flip-card {
+    max-width: 170px;
+  }
+
+  .flip-back-name {
+    font-size: 1rem;
+  }
+
+  .flip-back-title {
+    font-size: 0.7rem;
+  }
+
+  .flip-back-icon {
+    width: 40px;
+    height: 40px;
+  }
+
+  .flip-back-icon svg {
+    width: 22px;
+    height: 22px;
+  }
+}
+
+@media (max-width: 900px) {
+  .flip-card {
+    max-width: 150px;
+  }
+
+  .flip-back-name {
+    font-size: 0.9rem;
+  }
+
+  .flip-back-title {
+    font-size: 0.65rem;
+  }
+
+  .flip-front-info h3 {
+    font-size: 0.85rem;
+  }
+
+  .flip-front-info p {
+    font-size: 0.65rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .flip-card {
+    max-width: 160px;
+  }
+
+  .flip-back-content {
+    padding: 1rem;
+  }
+
+  .flip-back-icon {
+    width: 35px;
+    height: 35px;
+  }
+
+  .flip-back-icon svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  .flip-back-name {
+    font-size: 0.9rem;
+  }
+
+  .flip-back-title {
+    font-size: 0.65rem;
+  }
+
+  .flip-back-hint {
+    font-size: 1.2rem;
+    margin-top: 0.5rem;
+  }
+
+  .flip-front-overlay {
+    padding: 0.75rem;
+  }
+
+  .flip-front-info h3 {
+    font-size: 0.8rem;
+  }
+
+  .flip-front-info p {
+    font-size: 0.6rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .flip-card {
+    max-width: 220px;
+  }
+
+  .flip-back-content {
+    padding: 1.5rem;
+  }
+
+  .flip-back-icon {
+    width: 50px;
+    height: 50px;
+  }
+
+  .flip-back-icon svg {
+    width: 26px;
+    height: 26px;
+  }
+
+  .flip-back-name {
+    font-size: 1.15rem;
+  }
+
+  .flip-back-title {
+    font-size: 0.8rem;
+  }
+
+  .flip-back-hint {
+    font-size: 1.5rem;
+    margin-top: 0.75rem;
+  }
+
+  .flip-front-overlay {
+    padding: 1.25rem;
+  }
+
+  .flip-front-info h3 {
+    font-size: 1rem;
+  }
+
+  .flip-front-info p {
+    font-size: 0.75rem;
+  }
+}

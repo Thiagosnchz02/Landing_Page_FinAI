@@ -55,8 +55,8 @@ const RegisterModal = ({ isOpen, onClose }) => {
             email,
             password,
             options: { 
-              // Añadimos la redirección específica para la web
-              emailRedirectTo: 'http://localhost:5173/',
+              // URL dinámica: usa la URL actual del sitio
+              emailRedirectTo: `${window.location.origin}/`,
               data: { full_name: fullName, username: username } 
             }
         });

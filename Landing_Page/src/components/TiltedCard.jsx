@@ -1,123 +1,83 @@
-import { useRef, useState } from 'react';
+// src/components/TiltedCard.jsx
+import React, { useState, useEffect, useRef } from 'react';
 import { motion, useMotionValue, useSpring } from 'motion/react';
 import './TiltedCard.css';
 
-const springValues = {
-  damping: 30,
-  stiffness: 100,
-  mass: 2
+// Hook simple para detectar el tamaño de la ventana
+const useIsMobile = () => {
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  return isMobile;
 };
 
+const springValues = { damping: 30, stiffness: 100, mass: 2 };
+
 export default function TiltedCard({
-  imageSrc,
-  altText = 'Tilted card image',
-  captionText = '',
-  containerHeight = '300px',
-  containerWidth = '100%',
-  imageHeight = '300px',
-  imageWidth = '300px',
-  scaleOnHover = 1.1,
-  rotateAmplitude = 14,
-  showMobileWarning = true,
-  showTooltip = false,
+  containerHeight = '400px',
   overlayContent = null,
-  displayOverlayContent = false
+  rotateAmplitude = 12,
+  scaleOnHover = 1.05
 }) {
   const ref = useRef(null);
+  const isMobile = useIsMobile(); // Detectamos si es móvil
 
-  const x = useMotionValue();
-  const y = useMotionValue();
   const rotateX = useSpring(useMotionValue(0), springValues);
   const rotateY = useSpring(useMotionValue(0), springValues);
   const scale = useSpring(1, springValues);
-  const opacity = useSpring(0);
-  const rotateFigcaption = useSpring(0, {
-    stiffness: 350,
-    damping: 30,
-    mass: 1
-  });
-
-  const [lastY, setLastY] = useState(0);
 
   function handleMouse(e) {
-    if (!ref.current) return;
-
+    if (isMobile || !ref.current) return; // Si es móvil, no hace NADA
+    
     const rect = ref.current.getBoundingClientRect();
     const offsetX = e.clientX - rect.left - rect.width / 2;
     const offsetY = e.clientY - rect.top - rect.height / 2;
-
     const rotationX = (offsetY / (rect.height / 2)) * -rotateAmplitude;
     const rotationY = (offsetX / (rect.width / 2)) * rotateAmplitude;
-
     rotateX.set(rotationX);
     rotateY.set(rotationY);
-
-    x.set(e.clientX - rect.left);
-    y.set(e.clientY - rect.top);
-
-    const velocityY = offsetY - lastY;
-    rotateFigcaption.set(-velocityY * 0.6);
-    setLastY(offsetY);
   }
 
   function handleMouseEnter() {
+    if (isMobile) return;
     scale.set(scaleOnHover);
-    opacity.set(1);
   }
 
   function handleMouseLeave() {
-    opacity.set(0);
+    if (isMobile) return;
     scale.set(1);
     rotateX.set(0);
     rotateY.set(0);
-    rotateFigcaption.set(0);
   }
 
   return (
+    // Añadimos una clase 'is-mobile' para que el CSS pueda reaccionar
     <figure
       ref={ref}
-      className="tilted-card-figure"
-      style={{
-        height: containerHeight,
-        width: containerWidth
-      }}
+      className={`tilted-card-figure ${isMobile ? 'is-mobile' : ''}`}
+      style={{ height: containerHeight }}
       onMouseMove={handleMouse}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
-      {showMobileWarning && (
-        <div className="tilted-card-mobile-alert">This effect is not optimized for mobile. Check on desktop.</div>
-      )}
-
       <motion.div
         className="tilted-card-inner"
+        // Si es móvil, los valores de animación se quedan en su estado inicial
         style={{
-          width: imageWidth,
-          height: imageHeight,
-          rotateX,
-          rotateY,
-          scale
+          rotateX: isMobile ? 0 : rotateX,
+          rotateY: isMobile ? 0 : rotateY,
+          scale: isMobile ? 1 : scale,
         }}
       >
-
-        {displayOverlayContent && overlayContent && (
-          <motion.div className="tilted-card-overlay">{overlayContent}</motion.div>
-        )}
+        {overlayContent}
       </motion.div>
-
-      {showTooltip && (
-        <motion.figcaption
-          className="tilted-card-caption"
-          style={{
-            x,
-            y,
-            opacity,
-            rotate: rotateFigcaption
-          }}
-        >
-          {captionText}
-        </motion.figcaption>
-      )}
     </figure>
   );
 }
