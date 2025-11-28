@@ -104,7 +104,7 @@ const AIAssistantAnimation = ({ isHovered }) => {
           opacity: active ? 1 : 0.5,
         }}
         transition={{ 
-          rotate: { duration: 12, repeat: Infinity, ease: "linear" },
+          rotate: { duration: 12, repeat: isMobile ? 0 : Infinity, ease: "linear" },
           opacity: { duration: 0.3 }
         }}
       >

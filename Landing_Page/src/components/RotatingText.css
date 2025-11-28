@@ -89,3 +89,15 @@
     100% { transform: translateY(0); }
   }
 }
+
+/* Desactivar animaciones si el usuario prefiere movimiento reducido */
+@media (prefers-reduced-motion: reduce) {
+  .rotating-text-container {
+    animation: none;
+  }
+  
+  /* Mostrar solo la primera palabra */
+  .rotating-text-container span:not(:first-child) {
+    display: none;
+  }
+}

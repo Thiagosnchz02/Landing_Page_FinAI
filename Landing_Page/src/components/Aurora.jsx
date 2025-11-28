@@ -1,5 +1,5 @@
 import { Renderer, Program, Mesh, Color, Triangle } from "ogl";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import './Aurora.css';
 
@@ -10,8 +10,9 @@ void main() {
 }
 `;
 
+// Shader optimizado - menos operaciones matemáticas
 const FRAG = `#version 300 es
-precision mediump float;
+precision lowp float;
 
 uniform float uTime;
 uniform float uAmplitude;
@@ -21,88 +22,34 @@ uniform float uBlend;
 
 out vec4 fragColor;
 
-vec3 permute(vec3 x) {
-  return mod(((x * 34.0) + 1.0) * x, 289.0);
-}
-
-float snoise(vec2 v){
-  const vec4 C = vec4(
-      0.211324865405187, 0.366025403784439,
-      -0.577350269189626, 0.024390243902439
-  );
-  vec2 i  = floor(v + dot(v, C.yy));
-  vec2 x0 = v - i + dot(i, C.xx);
-  vec2 i1 = (x0.x > x0.y) ? vec2(1.0, 0.0) : vec2(0.0, 1.0);
-  vec4 x12 = x0.xyxy + C.xxzz;
-  x12.xy -= i1;
-  i = mod(i, 289.0);
-
-  vec3 p = permute(
-      permute(i.y + vec3(0.0, i1.y, 1.0))
-    + i.x + vec3(0.0, i1.x, 1.0)
-  );
-
-  vec3 m = max(
-      0.5 - vec3(
-          dot(x0, x0),
-          dot(x12.xy, x12.xy),
-          dot(x12.zw, x12.zw)
-      ), 
-      0.0
-  );
-  m = m * m;
-  m = m * m;
-
-  vec3 x = 2.0 * fract(p * C.www) - 1.0;
-  vec3 h = abs(x) - 0.5;
-  vec3 ox = floor(x + 0.5);
-  vec3 a0 = x - ox;
-  m *= 1.79284291400159 - 0.85373472095314 * (a0*a0 + h*h);
-
-  vec3 g;
-  g.x  = a0.x  * x0.x  + h.x  * x0.y;
-  g.yz = a0.yz * x12.xz + h.yz * x12.yw;
-  return 130.0 * dot(m, g);
-}
-
-struct ColorStop {
-  vec3 color;
-  float position;
-};
-
-#define COLOR_RAMP(colors, factor, finalColor) {              \
-  int index = 0;                                            \
-  for (int i = 0; i < 2; i++) {                               \
-     ColorStop currentColor = colors[i];                    \
-     bool isInBetween = currentColor.position <= factor;    \
-     index = int(mix(float(index), float(i), float(isInBetween))); \
-  }                                                         \
-  ColorStop currentColor = colors[index];                   \
-  ColorStop nextColor = colors[index + 1];                  \
-  float range = nextColor.position - currentColor.position; \
-  float lerpFactor = (factor - currentColor.position) / range; \
-  finalColor = mix(currentColor.color, nextColor.color, lerpFactor); \
+// Simplex noise simplificado para mejor rendimiento
+float snoise(vec2 v) {
+  vec2 i = floor(v);
+  vec2 f = fract(v);
+  f = f * f * (3.0 - 2.0 * f);
+  float a = sin(dot(i, vec2(12.9898, 78.233))) * 43758.5453;
+  float b = sin(dot(i + vec2(1.0, 0.0), vec2(12.9898, 78.233))) * 43758.5453;
+  float c = sin(dot(i + vec2(0.0, 1.0), vec2(12.9898, 78.233))) * 43758.5453;
+  float d = sin(dot(i + vec2(1.0, 1.0), vec2(12.9898, 78.233))) * 43758.5453;
+  return mix(mix(fract(a), fract(b), f.x), mix(fract(c), fract(d), f.x), f.y) * 2.0 - 1.0;
 }
 
 void main() {
   vec2 uv = gl_FragCoord.xy / uResolution;
   
-  ColorStop colors[3];
-  colors[0] = ColorStop(uColorStops[0], 0.0);
-  colors[1] = ColorStop(uColorStops[1], 0.5);
-  colors[2] = ColorStop(uColorStops[2], 1.0);
+  // Color ramp simplificado sin structs ni loops
+  vec3 rampColor = mix(
+    mix(uColorStops[0], uColorStops[1], clamp(uv.x * 2.0, 0.0, 1.0)),
+    uColorStops[2],
+    clamp(uv.x * 2.0 - 1.0, 0.0, 1.0)
+  );
   
-  vec3 rampColor;
-  COLOR_RAMP(colors, uv.x, rampColor);
-  
-  float height = snoise(vec2(uv.x * 2.0 + uTime * 0.1, uTime * 0.10)) * 0.6 * uAmplitude;
+  float height = snoise(vec2(uv.x * 2.0 + uTime * 0.1, uTime * 0.1)) * 0.6 * uAmplitude;
   height = exp(height);
-  height = (uv.y * 2.0 - height + 0.2);
+  height = uv.y * 2.0 - height + 0.2;
   float intensity = 0.4 * height;
   
-  float midPoint = 0.20;
-  float auroraAlpha = smoothstep(midPoint - uBlend * 0.5, midPoint + uBlend * 0.5, intensity);
-  
+  float auroraAlpha = smoothstep(0.20 - uBlend * 0.5, 0.20 + uBlend * 0.5, intensity);
   vec3 auroraColor = intensity * rampColor;
   
   fragColor = vec4(auroraColor * auroraAlpha, auroraAlpha);
@@ -116,14 +63,16 @@ const isMobile = () => {
     || window.innerWidth < 768;
 };
 
-// Obtener device pixel ratio limitado para rendimiento
-const getOptimalPixelRatio = () => {
-  if (typeof window === 'undefined') return 1;
-  const dpr = window.devicePixelRatio || 1;
-  // En móviles, limitar a 1 para mejor rendimiento
-  // En desktop, limitar a 1.5 máximo
-  if (isMobile()) return Math.min(dpr, 1);
-  return Math.min(dpr, 1.5);
+// Detectar si el usuario prefiere movimiento reducido
+const prefersReducedMotion = () => {
+  if (typeof window === 'undefined') return false;
+  return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+};
+
+// Factor de escala para reducir resolución en móvil (renderiza a menor resolución)
+const getResolutionScale = () => {
+  if (isMobile()) return 0.3; // 30% de la resolución en móvil
+  return 0.6; // 60% en desktop
 };
 
 export default function Aurora(props) {
@@ -136,25 +85,47 @@ export default function Aurora(props) {
   propsRef.current = props;
 
   const ctnDom = useRef(null);
+  const [isSupported, setIsSupported] = useState(true);
+  const [reducedMotion, setReducedMotion] = useState(prefersReducedMotion);
 
   useEffect(() => {
     const ctn = ctnDom.current;
     if (!ctn) return;
 
-    const pixelRatio = getOptimalPixelRatio();
+    // Si el usuario prefiere movimiento reducido, mostrar imagen estática
+    const reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const handleReducedMotionChange = (e) => setReducedMotion(e.matches);
+    reducedMotionQuery.addEventListener('change', handleReducedMotionChange);
+
+    if (reducedMotion) {
+      // Renderizar un solo frame y parar
+      return () => {
+        reducedMotionQuery.removeEventListener('change', handleReducedMotionChange);
+      };
+    }
+
     const mobile = isMobile();
+    const resolutionScale = getResolutionScale();
     
-    // FPS objetivo: 30 en móvil, 60 en desktop
-    const targetFPS = mobile ? 30 : 60;
+    // FPS: 15 en móvil (mínimo viable), 30 en desktop
+    const targetFPS = mobile ? 15 : 30;
     const frameInterval = 1000 / targetFPS;
     let lastFrameTime = 0;
+
+    // Verificar soporte WebGL2
+    const testCanvas = document.createElement('canvas');
+    const testGl = testCanvas.getContext('webgl2');
+    if (!testGl) {
+      setIsSupported(false);
+      return;
+    }
 
     const renderer = new Renderer({
       alpha: true,
       premultipliedAlpha: true,
-      antialias: !mobile, // Desactivar antialiasing en móvil
-      dpr: pixelRatio,
-      powerPreference: 'low-power' // Preferir eficiencia energética
+      antialias: false, // Nunca antialiasing - muy costoso
+      dpr: 1, // Siempre DPR 1, escalamos manualmente
+      powerPreference: 'low-power'
     });
     const gl = renderer.gl;
     gl.clearColor(0, 0, 0, 0);
@@ -168,9 +139,15 @@ export default function Aurora(props) {
       if (!ctn) return;
       const width = ctn.offsetWidth;
       const height = ctn.offsetHeight;
-      renderer.setSize(width, height);
+      // Renderizar a menor resolución y escalar con CSS
+      const scaledWidth = Math.floor(width * resolutionScale);
+      const scaledHeight = Math.floor(height * resolutionScale);
+      renderer.setSize(scaledWidth, scaledHeight);
+      // El canvas se estira al 100% via CSS, creando efecto de blur natural
+      gl.canvas.style.width = '100%';
+      gl.canvas.style.height = '100%';
       if (program) {
-        program.uniforms.uResolution.value = [width * pixelRatio, height * pixelRatio];
+        program.uniforms.uResolution.value = [scaledWidth, scaledHeight];
       }
     }
     
@@ -178,7 +155,7 @@ export default function Aurora(props) {
     let resizeTimeout;
     const debouncedResize = () => {
       clearTimeout(resizeTimeout);
-      resizeTimeout = setTimeout(resize, 100);
+      resizeTimeout = setTimeout(resize, 150);
     };
     window.addEventListener("resize", debouncedResize);
 
@@ -192,6 +169,9 @@ export default function Aurora(props) {
       return [c.r, c.g, c.b];
     });
 
+    const scaledWidth = Math.floor(ctn.offsetWidth * resolutionScale);
+    const scaledHeight = Math.floor(ctn.offsetHeight * resolutionScale);
+
     program = new Program(gl, {
       vertex: VERT,
       fragment: FRAG,
@@ -199,7 +179,7 @@ export default function Aurora(props) {
         uTime: { value: 0 },
         uAmplitude: { value: amplitude },
         uColorStops: { value: colorStopsArray },
-        uResolution: { value: [ctn.offsetWidth * pixelRatio, ctn.offsetHeight * pixelRatio] },
+        uResolution: { value: [scaledWidth, scaledHeight] },
         uBlend: { value: blend }
       }
     });
@@ -253,6 +233,7 @@ export default function Aurora(props) {
       clearTimeout(resizeTimeout);
       window.removeEventListener("resize", debouncedResize);
       document.removeEventListener('visibilitychange', handleVisibilityChange);
+      reducedMotionQuery.removeEventListener('change', handleReducedMotionChange);
       observer.disconnect();
       if (ctn && gl.canvas.parentNode === ctn) {
         ctn.removeChild(gl.canvas);
@@ -260,7 +241,20 @@ export default function Aurora(props) {
       gl.getExtension("WEBGL_lose_context")?.loseContext();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [amplitude]);
+  }, [amplitude, reducedMotion]);
+
+  // Si WebGL2 no está soportado o prefiere movimiento reducido, mostrar gradiente CSS
+  if (!isSupported || reducedMotion) {
+    return (
+      <div 
+        className="aurora-container" 
+        style={{
+          background: `linear-gradient(135deg, ${colorStops[0]} 0%, ${colorStops[1]} 50%, ${colorStops[2]} 100%)`,
+          opacity: 0.6
+        }} 
+      />
+    );
+  }
 
   return <div ref={ctnDom} className="aurora-container" />;
 }

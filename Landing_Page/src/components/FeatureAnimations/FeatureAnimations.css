@@ -397,3 +397,43 @@
     font-size: 18px;
   }
 }
+
+/* ============================
+   PERFORMANCE OPTIMIZATIONS
+   ============================ */
+
+/* GPU acceleration para elementos animados */
+.ai-core,
+.availability-ring,
+.mini-dashboard,
+.chart-bar,
+.progress-line,
+.budget-circle circle,
+.growth-chart path,
+.fill-level,
+.rocket {
+  will-change: transform, opacity;
+  transform: translateZ(0);
+}
+
+/* Desactivar todas las animaciones si el usuario prefiere movimiento reducido */
+@media (prefers-reduced-motion: reduce) {
+  .bubble-dot {
+    animation: none;
+  }
+  
+  .ai-core,
+  .availability-ring,
+  .chat-bubble,
+  .data-particle,
+  .chart-bar,
+  .progress-line,
+  .category-icon,
+  .growth-chart path,
+  .fill-level,
+  .rocket,
+  .achievement-star {
+    animation: none !important;
+    transition: none !important;
+  }
+}
