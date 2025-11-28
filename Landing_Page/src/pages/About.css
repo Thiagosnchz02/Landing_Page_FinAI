@@ -3,7 +3,7 @@
   color: white;
   max-width: 900px;
   margin: 0 auto;
-  padding: 6rem 1.5rem 3rem;
+  padding: 8rem 1.5rem 3rem; /* Más padding-top para el header fijo */
   display: flex;
   flex-direction: column;
   gap: 4rem;
@@ -78,7 +78,7 @@
 /* --- RESPONSIVE --- */
 @media (max-width: 900px) {
   .about-page {
-    padding: 4rem 1rem 2rem;
+    padding: 7rem 1rem 2rem; /* Mantener espacio para header */
     max-width: 100%;
   }
   .about-title {
@@ -91,7 +91,7 @@
 
 @media (max-width: 600px) {
   .about-page {
-    padding: 2.5rem 0.5rem 1.5rem;
+    padding: 6rem 0.5rem 1.5rem; /* Suficiente espacio para header móvil */
     gap: 2rem;
   }
   .about-title {
