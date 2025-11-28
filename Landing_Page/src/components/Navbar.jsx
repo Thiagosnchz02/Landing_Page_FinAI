@@ -34,8 +34,8 @@ const Navbar = () => {
         </Link>
 
         {/* --- Parte Derecha en móvil: Icono descarga + Hamburguesa --- */}
-        <div className="navbar-right">
-          {/* Botón de Descarga */}
+        <div className={`navbar-right ${isMenuOpen ? 'menu-open' : ''}`}>
+          {/* Botón de Descarga - se oculta cuando el menú está abierto */}
           <div className="navbar-actions">
             <button className="navbar-button navbar-download" onClick={handleDownload}>
               <span className="download-icon">📱</span>
@@ -43,11 +43,11 @@ const Navbar = () => {
             </button>
           </div>
 
-          {/* Botón de Hamburguesa (solo visible en móvil) */}
+          {/* Botón de Hamburguesa - se oculta cuando el menú está abierto */}
           <button 
-            className={`navbar-hamburger ${isMenuOpen ? 'open' : ''}`} 
+            className="navbar-hamburger" 
             onClick={toggleMenu}
-            aria-label="Menú"
+            aria-label="Abrir menú"
           >
             <span className="hamburger-line"></span>
             <span className="hamburger-line"></span>

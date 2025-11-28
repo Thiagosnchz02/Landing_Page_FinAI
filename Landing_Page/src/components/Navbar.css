@@ -33,6 +33,13 @@
   z-index: 100;
 }
 
+/* Ocultar botones cuando el menú está abierto en móvil */
+.navbar-right.menu-open {
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
+}
+
 /* --- Menú de Navegación (Móvil primero) --- */
 .navbar-links {
   display: flex;
@@ -193,20 +200,6 @@
   background: white;
   border-radius: 2px;
   transition: all 0.3s ease;
-}
-
-/* Animación de hamburguesa a X */
-.navbar-hamburger.open .hamburger-line:nth-child(1) {
-  transform: translateY(7px) rotate(45deg);
-}
-
-.navbar-hamburger.open .hamburger-line:nth-child(2) {
-  opacity: 0;
-  transform: scaleX(0);
-}
-
-.navbar-hamburger.open .hamburger-line:nth-child(3) {
-  transform: translateY(-7px) rotate(-45deg);
 }
 
 
