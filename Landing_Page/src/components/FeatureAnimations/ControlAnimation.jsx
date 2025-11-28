@@ -3,7 +3,13 @@ import React from 'react';
 import { motion } from 'motion/react';
 import './FeatureAnimations.css';
 
+// Detectar móvil una sola vez
+const isMobile = typeof window !== 'undefined' && 
+  (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth < 768);
+
 const ControlAnimation = ({ isHovered }) => {
+  const active = isMobile ? true : isHovered;
+  
   // Datos simulados para las barras del gráfico
   const bars = [
     { height: 40, delay: 0 },
@@ -19,29 +25,17 @@ const ControlAnimation = ({ isHovered }) => {
       <motion.div
         className="mini-dashboard"
         animate={{
-          boxShadow: isHovered 
-            ? '0 0 30px rgba(0, 21, 255, 0.3)' 
+          boxShadow: active 
+            ? '0 0 20px rgba(0, 21, 255, 0.2)' 
             : '0 0 10px rgba(0, 21, 255, 0.1)'
         }}
         transition={{ duration: 0.3 }}
       >
         {/* Header del dashboard */}
         <div className="dashboard-header">
-          <motion.div 
-            className="dashboard-dot red"
-            animate={{ scale: isHovered ? [1, 1.2, 1] : 1 }}
-            transition={{ duration: 0.5, delay: 0 }}
-          />
-          <motion.div 
-            className="dashboard-dot yellow"
-            animate={{ scale: isHovered ? [1, 1.2, 1] : 1 }}
-            transition={{ duration: 0.5, delay: 0.1 }}
-          />
-          <motion.div 
-            className="dashboard-dot green"
-            animate={{ scale: isHovered ? [1, 1.2, 1] : 1 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-          />
+          <div className="dashboard-dot red" />
+          <div className="dashboard-dot yellow" />
+          <div className="dashboard-dot green" />
         </div>
 
         {/* Gráfico de barras */}
@@ -50,16 +44,16 @@ const ControlAnimation = ({ isHovered }) => {
             <motion.div
               key={i}
               className="chart-bar"
-              initial={{ height: 0 }}
+              initial={{ height: `${bar.height * 0.3}%` }}
               animate={{
-                height: isHovered ? `${bar.height}%` : `${bar.height * 0.3}%`,
-                backgroundColor: isHovered 
+                height: active ? `${bar.height}%` : `${bar.height * 0.3}%`,
+                backgroundColor: active 
                   ? `hsl(${240 + i * 20}, 100%, 60%)` 
                   : 'rgba(0, 21, 255, 0.3)'
               }}
               transition={{ 
-                duration: 0.6, 
-                delay: bar.delay,
+                duration: isMobile ? 0.3 : 0.6, 
+                delay: isMobile ? 0 : bar.delay,
                 ease: "easeOut"
               }}
             />
@@ -71,50 +65,51 @@ const ControlAnimation = ({ isHovered }) => {
           <motion.div
             className="progress-line"
             animate={{
-              width: isHovered ? '85%' : '30%',
-              backgroundColor: isHovered ? '#0015FF' : 'rgba(0, 21, 255, 0.3)'
+              width: active ? '85%' : '30%',
+              backgroundColor: active ? '#0015FF' : 'rgba(0, 21, 255, 0.3)'
             }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
+            transition={{ duration: isMobile ? 0.4 : 0.8, ease: "easeOut" }}
           />
         </div>
       </motion.div>
 
-      {/* Iconos flotantes de categorías */}
-      <motion.div
-        className="category-icon icon-1"
-        animate={{
-          y: isHovered ? [-8, 8, -8] : 0,
-          opacity: isHovered ? 1 : 0.5,
-          rotate: isHovered ? [0, 10, -10, 0] : 0,
-        }}
-        transition={{ duration: 3, repeat: Infinity }}
-      >
-        💳
-      </motion.div>
+      {/* Iconos flotantes de categorías - solo en desktop */}
+      {!isMobile && (
+        <>
+          <motion.div
+            className="category-icon icon-1"
+            animate={{
+              y: active ? [-8, 8, -8] : 0,
+              opacity: active ? 1 : 0.5,
+            }}
+            transition={{ duration: 3, repeat: Infinity }}
+          >
+            💳
+          </motion.div>
 
-      <motion.div
-        className="category-icon icon-2"
-        animate={{
-          y: isHovered ? [8, -8, 8] : 0,
-          opacity: isHovered ? 1 : 0.5,
-          rotate: isHovered ? [0, -10, 10, 0] : 0,
-        }}
-        transition={{ duration: 2.5, repeat: Infinity, delay: 0.5 }}
-      >
-        📊
-      </motion.div>
+          <motion.div
+            className="category-icon icon-2"
+            animate={{
+              y: active ? [8, -8, 8] : 0,
+              opacity: active ? 1 : 0.5,
+            }}
+            transition={{ duration: 2.5, repeat: Infinity, delay: 0.5 }}
+          >
+            📊
+          </motion.div>
 
-      <motion.div
-        className="category-icon icon-3"
-        animate={{
-          y: isHovered ? [-5, 5, -5] : 0,
-          opacity: isHovered ? 1 : 0.5,
-          scale: isHovered ? [1, 1.2, 1] : 1,
-        }}
-        transition={{ duration: 2, repeat: Infinity, delay: 0.2 }}
-      >
-        🔒
-      </motion.div>
+          <motion.div
+            className="category-icon icon-3"
+            animate={{
+              y: active ? [-5, 5, -5] : 0,
+              opacity: active ? 1 : 0.5,
+            }}
+            transition={{ duration: 2, repeat: Infinity, delay: 0.2 }}
+          >
+            🔒
+          </motion.div>
+        </>
+      )}
 
       {/* Círculo de presupuesto */}
       <svg className="budget-circle" viewBox="0 0 100 100">
@@ -135,24 +130,23 @@ const ControlAnimation = ({ isHovered }) => {
           strokeWidth="8"
           strokeLinecap="round"
           strokeDasharray="251.2"
-          initial={{ strokeDashoffset: 251.2 }}
+          initial={{ strokeDashoffset: 188.4 }}
           animate={{
-            strokeDashoffset: isHovered ? 62.8 : 188.4, // 75% vs 25%
+            strokeDashoffset: active ? 62.8 : 188.4,
           }}
-          transition={{ duration: 1, ease: "easeOut" }}
+          transition={{ duration: isMobile ? 0.5 : 1, ease: "easeOut" }}
           style={{ transform: 'rotate(-90deg)', transformOrigin: 'center' }}
         />
-        <motion.text
+        <text
           x="50"
           y="55"
           textAnchor="middle"
           fill="white"
-          fontSize="14"
+          fontSize={isMobile ? "12" : "14"}
           fontWeight="bold"
-          animate={{ opacity: isHovered ? 1 : 0.5 }}
         >
-          {isHovered ? '75%' : '25%'}
-        </motion.text>
+          {active ? '75%' : '25%'}
+        </text>
       </svg>
     </div>
   );

@@ -288,58 +288,112 @@
 
 @media (max-width: 768px) {
   .feature-animation {
-    height: 120px;
-    margin-bottom: 1rem;
+    height: 100px;
+    margin-bottom: 0.75rem;
   }
 
   .ai-core {
-    width: 55px;
-    height: 55px;
-  }
-
-  .ai-icon {
-    width: 30px;
-    height: 30px;
-  }
-
-  .availability-ring {
-    width: 90px;
-    height: 90px;
-  }
-
-  .mini-dashboard {
-    width: 120px;
-    height: 75px;
-  }
-
-  .category-icon {
-    font-size: 18px;
-  }
-
-  .budget-circle {
-    width: 45px;
-    height: 45px;
-  }
-
-  .growth-chart {
-    width: 110px;
-    height: 55px;
-  }
-
-  .piggy-container {
     width: 50px;
     height: 50px;
   }
 
+  .ai-icon {
+    width: 28px;
+    height: 28px;
+  }
+
+  .availability-ring {
+    width: 80px;
+    height: 80px;
+  }
+
+  .mini-dashboard {
+    width: 110px;
+    height: 65px;
+  }
+
+  .category-icon {
+    font-size: 16px;
+  }
+
+  .budget-circle {
+    width: 40px;
+    height: 40px;
+  }
+
+  .growth-chart {
+    width: 100px;
+    height: 50px;
+  }
+
+  .piggy-container {
+    width: 45px;
+    height: 45px;
+  }
+
   .rocket {
-    font-size: 22px;
+    font-size: 20px;
   }
 
   .achievement-star {
-    font-size: 12px;
+    font-size: 10px;
   }
 
-  .chat-bubble {
-    display: none; /* Ocultar en móvil para simplificar */
+  /* Ocultar elementos secundarios en móvil para mejor rendimiento */
+  .chat-bubble,
+  .data-particle,
+  .achievement-star {
+    display: none;
+  }
+
+  .time-badge {
+    font-size: 8px;
+    padding: 2px 6px;
+  }
+}
+
+@media (max-width: 480px) {
+  .feature-animation {
+    height: 85px;
+    margin-bottom: 0.5rem;
+  }
+
+  .ai-core {
+    width: 45px;
+    height: 45px;
+  }
+
+  .ai-icon {
+    width: 24px;
+    height: 24px;
+  }
+
+  .availability-ring {
+    width: 70px;
+    height: 70px;
+  }
+
+  .mini-dashboard {
+    width: 100px;
+    height: 60px;
+    padding: 6px;
+  }
+
+  .chart-bar {
+    width: 12%;
+  }
+
+  .growth-chart {
+    width: 90px;
+    height: 45px;
+  }
+
+  .piggy-container {
+    width: 40px;
+    height: 40px;
+  }
+
+  .rocket {
+    font-size: 18px;
   }
 }
