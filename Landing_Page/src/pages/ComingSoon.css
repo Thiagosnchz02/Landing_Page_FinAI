@@ -5,7 +5,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 2rem;
+  padding: 8rem 2rem 3rem; /* Más padding-top para el navbar */
   text-align: center;
 }
 
@@ -15,6 +15,8 @@
   flex-direction: column;
   align-items: center;
   gap: 1.5rem;
+  position: relative;
+  z-index: 1; /* Por debajo del navbar (z-index: 50) */
 }
 
 /* Icono de plataforma */
@@ -26,7 +28,7 @@
   align-items: center;
   justify-content: center;
   font-size: 3rem;
-  margin-bottom: 1rem;
+  margin-bottom: 0.5rem;
 }
 
 .platform-icon.ios {
@@ -148,32 +150,83 @@
 }
 
 /* Responsive */
-@media (max-width: 600px) {
+@media (max-width: 768px) {
   .coming-soon-page {
-    padding: 6rem 1rem 2rem;
+    padding: 7rem 1.5rem 2rem;
+    min-height: auto;
   }
 
   .platform-icon {
     width: 80px;
     height: 80px;
     font-size: 2.5rem;
+    border-radius: 20px;
   }
 
   .coming-soon-title {
-    font-size: 1.5rem;
+    font-size: 1.6rem;
   }
 
   .coming-soon-message {
     font-size: 1rem;
   }
 
+  .progress-container {
+    max-width: 260px;
+  }
+
+  .features-preview {
+    gap: 0.75rem;
+  }
+
+  .feature-item {
+    padding: 0.5rem 0.8rem;
+    font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .coming-soon-page {
+    padding: 6rem 1rem 2rem;
+  }
+
+  .coming-soon-content {
+    gap: 1.25rem;
+  }
+
+  .platform-icon {
+    width: 70px;
+    height: 70px;
+    font-size: 2rem;
+    border-radius: 16px;
+  }
+
+  .coming-soon-title {
+    font-size: 1.4rem;
+  }
+
+  .coming-soon-message {
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+
+  .coming-soon-message br {
+    display: none;
+  }
+
   .features-preview {
     flex-direction: column;
-    align-items: center;
+    width: 100%;
   }
 
   .feature-item {
     width: 100%;
     justify-content: center;
+  }
+
+  .back-button {
+    width: 100%;
+    justify-content: center;
+    padding: 0.9rem 1.5rem;
   }
 }
