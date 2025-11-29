@@ -8,6 +8,7 @@ import Home from './pages/Home';
 import About from './pages/About';
 import Pricing from './pages/Pricing';
 import QR from './pages/QR';
+import ComingSoon from './pages/ComingSoon';
 
 // Páginas Legales
 import Privacy from './pages/Privacy';
@@ -23,6 +24,7 @@ function App() {
         <Route path="about" element={<About />} />
         <Route path="pricing" element={<Pricing />} />
         <Route path="qr" element={<QR />} />
+        <Route path="coming-soon" element={<ComingSoon />} />
         <Route path="privacidad" element={<Privacy />} />
         <Route path="terminos" element={<Terms />} />
         <Route path="cookies" element={<Cookies />} />

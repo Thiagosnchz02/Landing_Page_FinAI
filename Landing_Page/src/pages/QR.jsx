@@ -1,14 +1,17 @@
 // src/pages/QR.jsx
 import React from 'react';
 import { QRCodeSVG } from 'qrcode.react';
+import { Link } from 'react-router-dom';
 import TiltedCard from '../components/TiltedCard';
 import { FaApple, FaGooglePlay } from 'react-icons/fa';
 import GradientText from '../components/GradientText';
 import './QR.css';
 
 const QRPage = () => {
-  const appStoreUrl = "https://apps.apple.com/app/your-app-id";
-  const playStoreUrl = "https://play.google.com/store/apps/details?id=your.app.package";
+  // URLs temporales que apuntan a la página "Coming Soon"
+  const baseUrl = window.location.origin;
+  const appStoreUrl = `${baseUrl}/coming-soon?platform=ios`;
+  const playStoreUrl = `${baseUrl}/coming-soon?platform=android`;
 
   // --- CAMBIOS EN LAS PROPS DEL QR ---
   const qrCodeProps = {
@@ -71,14 +74,14 @@ const QRPage = () => {
       </div>
 
       <div className="store-buttons">
-          <a href={appStoreUrl} target="_blank" rel="noopener noreferrer" className="store-button">
+          <Link to="/coming-soon?platform=ios" className="store-button">
             <FaApple />
             <span>App Store</span>
-          </a>
-          <a href={playStoreUrl} target="_blank" rel="noopener noreferrer" className="store-button">
+          </Link>
+          <Link to="/coming-soon?platform=android" className="store-button">
             <FaGooglePlay />
             <span>Google Play</span>
-          </a>
+          </Link>
       </div>
     </div>
   );
