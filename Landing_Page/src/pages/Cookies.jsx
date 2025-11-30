@@ -131,7 +131,7 @@ const Cookies = () => {
           </p>
           <p className="contact-info">
             <strong>FinAi</strong><br />
-            Email: <a href="mailto:privacidad@finai.app">privacidad@finai.app</a>
+            Email: <a href="mailto:privacidad@finai.es">privacidad@finai.es</a>
           </p>
         </section>
       </div>

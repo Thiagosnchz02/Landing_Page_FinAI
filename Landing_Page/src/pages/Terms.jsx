@@ -139,7 +139,7 @@ const Terms = () => {
           </p>
           <p className="contact-info">
             <strong>FinAi</strong><br />
-            Email: <a href="mailto:legal@finai.app">legal@finai.app</a>
+            Email: <a href="mailto:legal@finai.es">legal@finai.es</a>
           </p>
         </section>
       </div>

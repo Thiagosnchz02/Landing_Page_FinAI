@@ -3,7 +3,7 @@ User-agent: *
 Allow: /
 
 # Sitemap
-Sitemap: https://finai.app/sitemap.xml
+Sitemap: https://finai.es/sitemap.xml
 
 # Bloquear rutas del portal privado
 Disallow: /portal-suscripcion/

@@ -6,11 +6,12 @@
 }
 
 .legal-container {
-  max-width: 800px;
+  max-width: 900px;
   margin: 0 auto;
 }
 
 .legal-page h1 {
+  font-family: 'Space Grotesk', sans-serif;
   font-size: 2.5rem;
   font-weight: 700;
   margin-bottom: 0.5rem;
@@ -100,33 +101,96 @@
   color: white;
 }
 
-/* Tabla de cookies */
-.cookie-table {
+/* Tabla de cookies y datos */
+.cookie-table,
+.data-table {
   width: 100%;
   border-collapse: collapse;
   margin: 1.5rem 0;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
 }
 
 .cookie-table th,
-.cookie-table td {
-  padding: 1rem;
+.cookie-table td,
+.data-table th,
+.data-table td {
+  padding: 0.85rem 0.75rem;
   text-align: left;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.cookie-table th {
+.cookie-table th,
+.data-table th {
   background: rgba(253, 8, 187, 0.1);
   color: #e0e0e0;
   font-weight: 600;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
-.cookie-table td {
+.cookie-table td,
+.data-table td {
+  color: #a0a0a0;
+  vertical-align: top;
+}
+
+.cookie-table tr:hover td,
+.data-table tr:hover td {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+/* Contenedor de tabla con scroll horizontal */
+.table-wrapper {
+  overflow-x: auto;
+  margin: 1.5rem 0;
+  border-radius: 0.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.table-wrapper table {
+  margin: 0;
+  min-width: 700px;
+}
+
+/* Subtítulos de subsecciones */
+.legal-section h4 {
+  font-size: 1rem;
+  font-weight: 500;
+  color: #FD08BB;
+  margin: 2rem 0 0.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid rgba(253, 8, 187, 0.2);
+}
+
+/* Destacados informativos */
+.legal-highlight {
+  background: rgba(77, 15, 255, 0.08);
+  border-left: 3px solid #4D0FFF;
+  padding: 1rem 1.25rem;
+  margin: 1.5rem 0;
+  border-radius: 0 0.5rem 0.5rem 0;
+}
+
+.legal-highlight p {
+  margin: 0;
+  color: #c0c0c0;
+}
+
+/* Lista compacta para derechos ARCO */
+.legal-section ol {
+  padding-left: 1.5rem;
+  margin: 1rem 0;
+}
+
+.legal-section ol li {
+  padding-left: 0.5rem;
+  margin-bottom: 0.5rem;
   color: #a0a0a0;
 }
 
-.cookie-table tr:hover td {
-  background: rgba(255, 255, 255, 0.02);
+.legal-section ol li::before {
+  content: none;
 }
 
 /* Responsive */
@@ -143,12 +207,34 @@
     font-size: 1.25rem;
   }
 
-  .cookie-table {
-    font-size: 0.8rem;
+  .legal-section h3 {
+    font-size: 1rem;
+  }
+
+  .legal-section h4 {
+    font-size: 0.9rem;
+  }
+
+  .cookie-table,
+  .data-table {
+    font-size: 0.75rem;
   }
 
   .cookie-table th,
-  .cookie-table td {
-    padding: 0.75rem 0.5rem;
+  .cookie-table td,
+  .data-table th,
+  .data-table td {
+    padding: 0.6rem 0.5rem;
+  }
+
+  .table-wrapper {
+    margin: 1rem -0.5rem;
+    border-radius: 0;
+    border-left: none;
+    border-right: none;
+  }
+
+  .contact-info {
+    padding: 1rem;
   }
 }
